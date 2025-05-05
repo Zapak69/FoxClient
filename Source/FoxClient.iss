@@ -13,17 +13,17 @@ AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 CreateAppDir=no
-LicenseFile=C:\Users\Zipp\Desktop\FoxClient\License.txt
+LicenseFile=D:\Programy\FoxClient\License.txt
 PrivilegesRequired=admin
-OutputDir=C:\Users\Zipp\Desktop\FoxClient
+OutputDir=D:\Programy\FoxClient
 OutputBaseFilename=mysetup
-SetupIconFile=C:\Users\Zipp\Desktop\FoxClient\icon.ico
-UninstallDisplayIcon=C:\Users\Zipp\Desktop\FoxClient\icon.ico
+SetupIconFile=D:\Programy\FoxClient\icon.ico
+UninstallDisplayIcon=D:\Programy\FoxClient\icon.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
-WizardImageFile=C:\Users\Zipp\Desktop\FoxClient\installer-side.bmp
-WizardSmallImageFile=C:\Users\Zipp\Desktop\FoxClient\installer-top.bmp
+WizardImageFile=D:\Programy\FoxClient\installer-side.bmp
+WizardSmallImageFile=D:\Programy\FoxClient\installer-top.bmp
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -55,10 +55,10 @@ Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
 Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 
 [Files]
-Source: "C:\Users\Zipp\Desktop\FoxClient\FoxClient\*"; DestDir: "{userappdata}\.minecraft\versions\FoxClient"; Flags: recursesubdirs createallsubdirs
-Source: "C:\Users\Zipp\Desktop\FoxClient\launcher_profiles.template.json"; DestDir: "{tmp}"; Flags: dontcopy
-Source: "C:\Users\Zipp\Desktop\FoxClient\installer-side.bmp"; Flags: dontcopy
-Source: "C:\Users\Zipp\Desktop\FoxClient\installer-top.bmp"; Flags: dontcopy
+Source: "D:\Programy\FoxClient\FoxClient\*"; DestDir: "{userappdata}\.minecraft\versions\FoxClient"; Flags: recursesubdirs createallsubdirs
+Source: "D:\Programy\FoxClient\launcher_profiles.template.json"; DestDir: "{tmp}"; Flags: dontcopy
+Source: "D:\Programy\FoxClient\installer-side.bmp"; Flags: dontcopy
+Source: "D:\Programy\FoxClient\installer-top.bmp"; Flags: dontcopy
 
 [Code]
 var
@@ -125,10 +125,29 @@ begin
 end;
 procedure DeinitializeSetup();
 var
+  LauncherPath, TLauncherPath: string;
   ResultCode: Integer;
 begin
   if LaunchMinecraftCheckbox.Checked then
   begin
-    Exec('cmd.exe', '/C start "" "C:\Program Files (x86)\Minecraft Launcher\MinecraftLauncher.exe"', '', SW_HIDE, ewNoWait, ResultCode);
+    LauncherPath := ExpandConstant('{pf}\Minecraft Launcher\MinecraftLauncher.exe');
+    if FileExists(LauncherPath) then
+    begin
+      Exec(LauncherPath, '', '', SW_SHOWNORMAL, ewNoWait, ResultCode);
+    end
+    else
+    begin
+      if Exec('cmd.exe', '/C start "" "shell:AppsFolder\Microsoft.4297127D64EC6_8wekyb3d8bbwe!Minecraft"', '', SW_HIDE, ewNoWait, ResultCode) then
+      begin
+      end
+      else
+      begin
+        TLauncherPath := ExpandConstant('{userappdata}\.minecraft\TLauncher.exe');
+        if FileExists(TLauncherPath) then
+        begin
+          Exec(TLauncherPath, '', '', SW_SHOWNORMAL, ewNoWait, ResultCode);
+        end
+      end;
+    end;
   end;
 end;
