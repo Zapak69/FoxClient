@@ -1,7 +1,7 @@
 #define MyAppName "FoxClient"
 #define MyAppVersion "1.21"
 #define MyAppPublisher "Zipp"
-#define MyAppURL "discord.gg/Vqwu873crM"
+#define MyAppURL "discord.gg/crystalcommunity"
 #define MyAppExeName "MyProg-x64.exe"
 
 [Setup]
@@ -13,17 +13,17 @@ AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 CreateAppDir=no
-LicenseFile=D:\Programy\FoxClient\License.txt
+LicenseFile=**REPLACE**\FoxClient\License.txt
 PrivilegesRequired=admin
-OutputDir=D:\Programy\FoxClient
+OutputDir=**REPLACE**\FoxClient
 OutputBaseFilename=mysetup
-SetupIconFile=D:\Programy\FoxClient\icon.ico
-UninstallDisplayIcon=D:\Programy\FoxClient\icon.ico
+SetupIconFile=**REPLACE**\FoxClient\icon.ico
+UninstallDisplayIcon=**REPLACE**\FoxClient\icon.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
-WizardImageFile=D:\Programy\FoxClient\installer-side.bmp
-WizardSmallImageFile=D:\Programy\FoxClient\installer-top.bmp
+WizardImageFile=**REPLACE**\FoxClient\installer-side.bmp
+WizardSmallImageFile=**REPLACE**\FoxClient\installer-top.bmp
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -55,10 +55,10 @@ Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
 Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 
 [Files]
-Source: "D:\Programy\FoxClient\FoxClient\*"; DestDir: "{userappdata}\.minecraft\versions\FoxClient"; Flags: recursesubdirs createallsubdirs
-Source: "D:\Programy\FoxClient\launcher_profiles.template.json"; DestDir: "{tmp}"; Flags: dontcopy
-Source: "D:\Programy\FoxClient\installer-side.bmp"; Flags: dontcopy
-Source: "D:\Programy\FoxClient\installer-top.bmp"; Flags: dontcopy
+Source: "**REPLACE**\FoxClient\FoxClient\*"; DestDir: "{userappdata}\.minecraft\versions\FoxClient"; Flags: recursesubdirs createallsubdirs
+Source: "**REPLACE**\FoxClient\launcher_profiles.template.json"; DestDir: "{tmp}"; Flags: dontcopy
+Source: "**REPLACE**\FoxClient\installer-side.bmp"; Flags: dontcopy
+Source: "**REPLACE**\FoxClient\installer-top.bmp"; Flags: dontcopy
 
 [Code]
 var
@@ -151,3 +151,14 @@ begin
     end;
   end;
 end;
+
+[Icons]
+Name: "{userprograms}\FoxClient Local Files"; \
+  Filename: "{userappdata}\.minecraft\versions\FoxClient"; \
+  IconFilename: "**REPLACE**\FoxClient\icon.ico"; \
+  IconIndex: 0
+Name: "{userappdata}\.minecraft\.FoxClient Local Files"; \
+  Filename: "{userappdata}\.minecraft\versions\FoxClient"; \
+  IconFilename: "**REPLACE**\FoxClient\icon.ico"; \
+  IconIndex: 0
+
