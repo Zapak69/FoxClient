@@ -1,8 +1,6 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/Zapak69/FoxClient/main/Source/minecraft.png" alt="FoxClient Logo" width="600"/>
 </p>
-
-<h1 align="center">FoxClient</h1>
 <p align="center"><i>A powerful Fabric-based Crystal PvP modpack for Minecraft 1.21</i></p>
 
 ---
