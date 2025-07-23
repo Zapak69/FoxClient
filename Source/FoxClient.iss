@@ -2,7 +2,6 @@
 #define MyAppVersion "1.21"
 #define MyAppPublisher "Zipp"
 #define MyAppURL "discord.gg/crystalcommunity"
-#define MyAppExeName "MyProg-x64.exe"
 
 [Setup]
 AppId={{4A5A855E-CBF6-4144-BD15-EDD79D47A11F}
@@ -13,17 +12,17 @@ AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 CreateAppDir=no
-LicenseFile=D:\Programy\FoxClient\License.txt
+LicenseFile=[[APPLOCATION]]\License.txt
 PrivilegesRequired=admin
-OutputDir=D:\Programy\FoxClient
+OutputDir=[[APPLOCATION]]
 OutputBaseFilename=mysetup
-SetupIconFile=D:\Programy\FoxClient\icon.ico
-UninstallDisplayIcon=D:\Programy\FoxClient\icon.ico
+SetupIconFile=[[APPLOCATION]]\icon.ico
+UninstallDisplayIcon=[[APPLOCATION]]\icon.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
-WizardImageFile=D:\Programy\FoxClient\installer-side.bmp
-WizardSmallImageFile=D:\Programy\FoxClient\installer-top.bmp
+WizardImageFile=[[APPLOCATION]]\installer-side.bmp
+WizardSmallImageFile=[[APPLOCATION]]\installer-top.bmp
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -55,13 +54,12 @@ Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
 Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 
 [Files]
-Source: "D:\Programy\FoxClient\FoxClient\*"; DestDir: "{userappdata}\.minecraft\versions\FoxClient"; Flags: recursesubdirs createallsubdirs; Check: IsFoxClient
-Source: "D:\Programy\FoxClient\FoxClient-Tlauncher\*"; DestDir: "{userappdata}\.minecraft\FoxClient-TLauncher"; Flags: recursesubdirs createallsubdirs; Check: IsTLauncher
-Source: "D:\Programy\FoxClient\tlauncher-2.0.properties"; DestDir: "{userappdata}\.tlauncher"; Flags: ignoreversion; Check: IsTLauncher
-Source: "D:\Programy\FoxClient\launcher_profiles.template.json"; DestDir: "{tmp}"; Flags: dontcopy
-Source: "D:\Programy\FoxClient\installer-side.bmp"; Flags: dontcopy
-Source: "D:\Programy\FoxClient\installer-top.bmp"; Flags: dontcopy
-
+Source: "[[APPLOCATION]]\FoxClient\*"; DestDir: "{userappdata}\.minecraft\versions\FoxClient"; Flags: recursesubdirs createallsubdirs; Check: IsFoxClient
+Source: "[[APPLOCATION]]\FoxClient-Tlauncher\*"; DestDir: "{userappdata}\.minecraft\FoxClient-TLauncher"; Flags: recursesubdirs createallsubdirs; Check: IsTLauncher
+Source: "[[APPLOCATION]]\tlauncher-2.0.template.properties"; DestDir: "{tmp}"; Flags: dontcopy; Check: IsTLauncher
+Source: "[[APPLOCATION]]\launcher_profiles.template.json"; DestDir: "{tmp}"; Flags: dontcopy
+Source: "[[APPLOCATION]]\installer-side.bmp"; Flags: dontcopy
+Source: "[[APPLOCATION]]\installer-top.bmp"; Flags: dontcopy
 
 [Code]
 var
@@ -70,7 +68,7 @@ var
   FoxClientRadio: TRadioButton;
   TLauncherRadio: TRadioButton;
   SelectedClientDir: string;
-
+  EscapedPath: string;
 procedure InitializeWizard();
 var
   ResultCode: Integer;
@@ -100,7 +98,6 @@ begin
   LaunchMinecraftCheckbox.Caption := 'Launch Minecraft after installation';
   LaunchMinecraftCheckbox.Checked := True;
 end;
-
 procedure ReplaceTextInFile(const SourceFile, DestFile, Placeholder, Replacement: string);
 var
   Contents: AnsiString;
@@ -111,17 +108,17 @@ begin
     Utf8Contents := Contents;
     StringChangeEx(Utf8Contents, Placeholder, Replacement, True);
     SaveStringToFile(DestFile, AnsiString(Utf8Contents), False);
-  end;
+  end
+  else
+    MsgBox('Error loading template file: ' + SourceFile, mbError, MB_OK);
 end;
-
 procedure CurStepChanged(CurStep: TSetupStep);
 var
-  TemplateFile, LauncherFile, MinecraftDir, GameDir, GameDirForwardSlash, PropSource, PropTarget: string;
+  TemplateFile, LauncherFile, MinecraftDir, GameDir, GameDirForwardSlash, TLauncherDir: string;
 begin
   if CurStep = ssPostInstall then
   begin
     MinecraftDir := ExpandConstant('{userappdata}\.minecraft');
-
     if FoxClientRadio.Checked then
     begin
       GameDir := MinecraftDir + '\versions\FoxClient';
@@ -132,7 +129,6 @@ begin
       GameDirForwardSlash := GameDir;
       StringChangeEx(GameDirForwardSlash, '\', '/', True);
       ReplaceTextInFile(TemplateFile, LauncherFile, '{GAMEDIR}', GameDirForwardSlash);
-
       if not FileExists(LauncherFile) then
         MsgBox('Warning: Could not create launcher_profiles.json', mbError, MB_OK);
     end
@@ -140,19 +136,24 @@ begin
     begin
       GameDir := MinecraftDir + '\FoxClient-TLauncher';
       SelectedClientDir := GameDir;
-      PropSource := 'D:\Programy\FoxClient\tlauncher-2.0.properties';
-      PropTarget := MinecraftDir + '\tlauncher-2.0.properties';
-      FileCopy(PropSource, PropTarget, False);
+      TLauncherDir := ExpandConstant('{userappdata}\.tlauncher');
+      LauncherFile := TLauncherDir + '\tlauncher-2.0.properties';
+      if DirExists(TLauncherDir) then
+      begin
+        TemplateFile := ExpandConstant('{tmp}\tlauncher-2.0.template.properties');
+        ExtractTemporaryFile('tlauncher-2.0.template.properties');
+        EscapedPath := ExpandConstant('{userappdata}');
+        StringChangeEx(EscapedPath, '\', '\\', True);
+        ReplaceTextInFile(TemplateFile, LauncherFile, '{APPDATA}', EscapedPath);
+      end;
     end;
   end;
 end;
-
 procedure CurPageChanged(CurPageID: Integer);
 begin
   if CurPageID = wpFinished then
     LaunchMinecraftCheckbox.Visible := True;
 end;
-
 procedure DeinitializeSetup();
 var
   ResultCode: Integer;
@@ -170,22 +171,18 @@ begin
     end;
   end;
 end;
-
 function InitializeSetup(): Boolean;
 begin
   Result := True;
 end;
-
 function IsFoxClient(): Boolean;
 begin
   Result := FoxClientRadio.Checked;
 end;
-
 function IsTLauncher(): Boolean;
 begin
   Result := TLauncherRadio.Checked;
 end;
-
 
 [Icons]
 Name: "{userprograms}\FoxClient Local Files"; \
@@ -203,4 +200,4 @@ Name: "{userprograms}\FoxClient Tlauncher Local Files"; \
 Name: "{userappdata}\.minecraft\.FoxClient Tlauncher Local Files"; \
   Filename: "{userappdata}\.minecraft\FoxClient-TLauncher"; \
   IconFilename: "{userappdata}\.minecraft\FoxClient-TLauncher\icon.ico"; \
-  IconIndex: 0; Check: IsTLauncher
+  IconIndex: 0; Check: IsTLauncher  
