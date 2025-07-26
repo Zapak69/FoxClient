@@ -38,7 +38,7 @@ It’s specifically designed for **Crystal PvP**, with a lightweight but powerfu
 
 ### 💡 Notes
 
-- Want to customize the modpack? Just drop your `.jar` mods into the `mods` folder!
+- Want to customize FoxClient? Just drop your `.jar` mods into the `mods` folder!
 - Config files are located in `config` folder for advanced tweaking.
 - To acess these folders press `WIN` button and type `FoxClient Local Files` or in `.minecraft` folder
 - Get ZIPP´S config file optimized for best CPVP Experience on our DISCORD - [discord.gg/crystalcommunity](https://discord.gg/crystalcommunity)
