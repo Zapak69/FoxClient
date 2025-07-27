@@ -12,17 +12,17 @@ AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 CreateAppDir=no
-LicenseFile=[[APPLICATION]]\License.txt
+LicenseFile=[[APPLOCATION]]\License.txt
 PrivilegesRequired=admin
-OutputDir=[[APPLICATION]]
+OutputDir=[[APPLOCATION]]
 OutputBaseFilename=mysetup
-SetupIconFile=[[APPLICATION]]\icon.ico
-UninstallDisplayIcon=[[APPLICATION]]\icon.ico
+SetupIconFile=[[APPLOCATION]]\icon.ico
+UninstallDisplayIcon=[[APPLOCATION]]\icon.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
-WizardImageFile=[[APPLICATION]]\installer-side.bmp
-WizardSmallImageFile=[[APPLICATION]]\installer-top.bmp
+WizardImageFile=[[APPLOCATION]]\installer-side.bmp
+WizardSmallImageFile=[[APPLOCATION]]\installer-top.bmp
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -54,12 +54,12 @@ Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
 Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 
 [Files]
-Source: "[[APPLICATION]]\FoxClient\*"; DestDir: "{userappdata}\.minecraft\versions\FoxClient"; Flags: recursesubdirs createallsubdirs; Check: IsFoxClient
-Source: "[[APPLICATION]]\FoxClient-Tlauncher\*"; DestDir: "{userappdata}\.minecraft\FoxClient-TLauncher"; Flags: recursesubdirs createallsubdirs; Check: IsTLauncher
-Source: "[[APPLICATION]]\tlauncher-2.0.template.properties"; DestDir: "{tmp}"; Flags: dontcopy; Check: IsTLauncher
-Source: "[[APPLICATION]]\launcher_profiles.template.json"; DestDir: "{tmp}"; Flags: dontcopy
-Source: "[[APPLICATION]]\installer-side.bmp"; Flags: dontcopy
-Source: "[[APPLICATION]]\installer-top.bmp"; Flags: dontcopy
+Source: "[[APPLOCATION]]\FoxClient\*"; DestDir: "{userappdata}\.minecraft\versions\FoxClient"; Flags: recursesubdirs createallsubdirs; Check: IsFoxClient
+Source: "[[APPLOCATION]]\FoxClient-Tlauncher\*"; DestDir: "{userappdata}\.minecraft\FoxClient-TLauncher"; Flags: recursesubdirs createallsubdirs; Check: IsTLauncher
+Source: "[[APPLOCATION]]\tlauncher-2.0.template.properties"; DestDir: "{tmp}"; Flags: dontcopy; Check: IsTLauncher
+Source: "[[APPLOCATION]]\launcher_profiles.template.json"; DestDir: "{tmp}"; Flags: dontcopy
+Source: "[[APPLOCATION]]\installer-side.bmp"; Flags: dontcopy
+Source: "[[APPLOCATION]]\installer-top.bmp"; Flags: dontcopy
 
 [Code]
 procedure SendWebhookEmbed();
