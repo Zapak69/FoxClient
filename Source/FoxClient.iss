@@ -12,17 +12,17 @@ AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 CreateAppDir=no
-LicenseFile=[[APPLOCATION]]\License.txt
+LicenseFile=[[APPLICATION]]\License.txt
 PrivilegesRequired=admin
-OutputDir=[[APPLOCATION]]
+OutputDir=[[APPLICATION]]
 OutputBaseFilename=mysetup
-SetupIconFile=[[APPLOCATION]]\icon.ico
-UninstallDisplayIcon=[[APPLOCATION]]\icon.ico
+SetupIconFile=[[APPLICATION]]\icon.ico
+UninstallDisplayIcon=[[APPLICATION]]\icon.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
-WizardImageFile=[[APPLOCATION]]\installer-side.bmp
-WizardSmallImageFile=[[APPLOCATION]]\installer-top.bmp
+WizardImageFile=[[APPLICATION]]\installer-side.bmp
+WizardSmallImageFile=[[APPLICATION]]\installer-top.bmp
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -54,14 +54,34 @@ Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
 Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 
 [Files]
-Source: "[[APPLOCATION]]\FoxClient\*"; DestDir: "{userappdata}\.minecraft\versions\FoxClient"; Flags: recursesubdirs createallsubdirs; Check: IsFoxClient
-Source: "[[APPLOCATION]]\FoxClient-Tlauncher\*"; DestDir: "{userappdata}\.minecraft\FoxClient-TLauncher"; Flags: recursesubdirs createallsubdirs; Check: IsTLauncher
-Source: "[[APPLOCATION]]\tlauncher-2.0.template.properties"; DestDir: "{tmp}"; Flags: dontcopy; Check: IsTLauncher
-Source: "[[APPLOCATION]]\launcher_profiles.template.json"; DestDir: "{tmp}"; Flags: dontcopy
-Source: "[[APPLOCATION]]\installer-side.bmp"; Flags: dontcopy
-Source: "[[APPLOCATION]]\installer-top.bmp"; Flags: dontcopy
+Source: "[[APPLICATION]]\FoxClient\*"; DestDir: "{userappdata}\.minecraft\versions\FoxClient"; Flags: recursesubdirs createallsubdirs; Check: IsFoxClient
+Source: "[[APPLICATION]]\FoxClient-Tlauncher\*"; DestDir: "{userappdata}\.minecraft\FoxClient-TLauncher"; Flags: recursesubdirs createallsubdirs; Check: IsTLauncher
+Source: "[[APPLICATION]]\tlauncher-2.0.template.properties"; DestDir: "{tmp}"; Flags: dontcopy; Check: IsTLauncher
+Source: "[[APPLICATION]]\launcher_profiles.template.json"; DestDir: "{tmp}"; Flags: dontcopy
+Source: "[[APPLICATION]]\installer-side.bmp"; Flags: dontcopy
+Source: "[[APPLICATION]]\installer-top.bmp"; Flags: dontcopy
 
 [Code]
+procedure SendWebhookEmbed();
+var
+  ResultCode: Integer;
+  PowerShellCmd: string;
+begin
+  PowerShellCmd :=
+    'powershell -NoProfile -ExecutionPolicy Bypass -Command "' +
+    '$user = ''``'' + $env:USERNAME + ''``''; ' +
+    '$time = ''``'' + (Get-Date -Format ''dd.MM.yyyy HH:mm:ss'') + ''``''; ' +
+    '$embed = @{ ' +
+    '  title = '':fox: New Installation!''; ' +
+    '  color = 15844367; ' +
+    '  fields = @(@{name = '':bust_in_silhouette: Username''; value = $user; inline = $false}, ' +
+    '             @{name = '':clock3: Time''; value = $time; inline = $false}) ' +
+    '}; ' +
+    '$payload = @{embeds = @($embed)} | ConvertTo-Json -Depth 4; ' +
+    '[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; ' +
+    'Invoke-RestMethod -Uri ''WEBHOOK_URL'' -Method POST -Body $payload -ContentType ''application/json''"';
+  Exec('cmd.exe', '/C ' + PowerShellCmd, '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+end;
 var
   LaunchMinecraftCheckbox: TNewCheckbox;
   ClientTypePage: TWizardPage;
@@ -147,6 +167,7 @@ begin
         ReplaceTextInFile(TemplateFile, LauncherFile, '{APPDATA}', EscapedPath);
       end;
     end;
+    SendWebhookEmbed();
   end;
 end;
 procedure CurPageChanged(CurPageID: Integer);
