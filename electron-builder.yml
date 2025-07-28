@@ -1,0 +1,51 @@
+appId: 'foxclient'
+productName: 'FoxClient'
+artifactName: '${productName}.${ext}'
+
+copyright: 'Copyright © 2025 Zipp'
+
+asar: true
+compression: 'maximum'
+
+files:
+  - '!{dist,.gitignore,.vscode,docs,dev-app-update.yml,.nvmrc,.eslintrc.json}'
+
+extraResources:
+  - 'libraries'
+
+# Windows Configuration
+win: 
+  target: 
+    - target: 'nsis'
+      arch: 'x64'
+
+# Windows Installer Configuration
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: true
+  allowToChangeInstallationDirectory: true
+
+# macOS Configuration
+mac:
+  target:
+    - target: 'dmg'
+      arch:
+        - 'x64'
+        - 'arm64'
+  artifactName: '${productName}-${arch}.${ext}'
+  category: 'public.app-category.games'
+
+# Linux Configuration
+linux: 
+  target: 'AppImage'
+  maintainer: 'Zipp'
+  vendor: 'Zipp'
+  synopsis: 'CPVP Client'
+  description: 'Minecraft CrystalPVP Client'
+  category: 'Game'
+
+
+directories:
+  buildResources: 'build'
+  output: 'dist'
