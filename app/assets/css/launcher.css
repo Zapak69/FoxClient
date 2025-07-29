@@ -8,18 +8,8 @@
  ******************************************************************************/
 
 @font-face {
-    font-family: 'Minecraft';
-    src: url('../fonts/minecraft.ttf');
-}
-
-@font-face {
-    font-family: 'Minecraft';
-    src: url('../fonts/minecraft.ttf');
-}
-
-@font-face {
-    font-family: 'Minecraft3';
-    src: url('../fonts/minecraft.ttf');
+    font-family: 'Minecraftia-Regular';
+    src: url('../fonts/Minecraftia-Regular.ttf');
 }
 
 /*******************************************************************************
@@ -42,7 +32,7 @@ p {
 
 /* Set default font and color. */
 body, button {
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
     color: white;
 }
 
@@ -110,7 +100,7 @@ body, button {
 }
 #frameTitleText {
     font-size: 12px;
-    font-family: 'minecraft';
+    font-family: 'Minecraftia-Regular';
     letter-spacing: 0.5px;
 }
 
@@ -118,8 +108,8 @@ body, button {
 #frameButtonDockWin {
     -webkit-app-region: no-drag !important;
     position: relative;
-    top: -2px;
-    right: -2px;
+    top: -12px;
+    right: 5px;
     height: 22px;
 }
 #frameButtonDockWin > .frameButton:not(:first-child) {
@@ -284,7 +274,7 @@ body, button {
 }
 
 #welcomeHeader {
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
     text-align: center;
     color: white;
     margin-bottom: 25px;
@@ -497,7 +487,7 @@ body, button {
 
 /* Header on login view. */
 #loginSubheader {
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
     margin-bottom: 25px;
     font-size: 12px;
     letter-spacing: 1px;
@@ -522,7 +512,7 @@ body, button {
 
 /* Span which displays errors related to login field content. */
 .loginErrorSpan {
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
     font-weight: bold;
     font-size: 8px;
     color: #ff1b0c;
@@ -558,7 +548,7 @@ body, button {
 
 /* Login text input styles. */
 .loginField {
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
     background: none;
     border-width: 1.5px 0px 0px 0px;
     border-style: solid;
@@ -1222,7 +1212,7 @@ body, button {
 }
 .settingsTabHeaderText {
     font-size: 20px;
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
 }
 .settingsTabHeaderDesc {
     font-size: 12px;
@@ -1261,7 +1251,7 @@ body, button {
     background: none;
     font-size: 12px;
     border-radius: 3px;
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
     transition: 0.25s ease;
     cursor: pointer;
     outline: none;
@@ -1293,7 +1283,7 @@ body, button {
     background: rgba(0, 0, 0, 0.25);
     border-radius: 3px;
     border: 1px solid rgba(126, 126, 126, 0.57);
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
     transition: 0.25s ease;
 }
 #settingsContainer input[type=number]:focus,
@@ -1322,7 +1312,7 @@ body, button {
 }
 .settingsFieldTitle {
     font-size: 14px;
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
     color: rgba(255, 255, 255, 0.95);
 }
 .settingsFieldDesc {
@@ -1485,7 +1475,7 @@ input:checked + .toggleSwitchSlider:before {
     width: 89%;
 }
 .settingsFileSelDesc strong {
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
 }
 
 /* * *
@@ -1593,7 +1583,7 @@ input:checked + .toggleSwitchSlider:before {
     font-size: 12px;
     color: grey;
     font-weight: bold;
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
 }
 .settingsAuthAccountDetailValue {
     font-size: 10px;
@@ -1615,7 +1605,7 @@ input:checked + .toggleSwitchSlider:before {
     border: none;
     white-space: nowrap;
     background: none;
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
     outline: none;
     transition: 0.25s ease;
 }
@@ -1640,7 +1630,7 @@ input:checked + .toggleSwitchSlider:before {
     background: none;
     font-size: 12px;
     border-radius: 3px;
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
     transition: 0.25s ease;
     cursor: pointer;
     outline: none;
@@ -2195,7 +2185,7 @@ input:checked + .toggleSwitchSlider:before {
 /* Release type text. */
 #settingsAboutCurrentVersionTitle {
     font-size: 12px;
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
     color: #23aa23;
     font-weight: bold;
 }
@@ -2284,7 +2274,7 @@ input:checked + .toggleSwitchSlider:before {
     background-color: rgba(255, 255, 255, 0.25);
     color: white;
     border-radius: 3px;
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
 }
 .settingsChangelogText li+li {
     margin-top: .25em;
@@ -2394,7 +2384,7 @@ input:checked + .toggleSwitchSlider:before {
 /* Release type text. */
 #settingsUpdateVersionTitle {
     font-size: 12px;
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
     color: #23aa23;
     font-weight: bold;
 }
@@ -2593,7 +2583,7 @@ input:checked + .toggleSwitchSlider:before {
 #newsArticleTitle {
     font-size: 18px;
     font-weight: bold;
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
     color: white;
     text-decoration: none;
     transition: 0.25s ease;
@@ -2911,7 +2901,7 @@ input:checked + .toggleSwitchSlider:before {
     z-index: 1;
     top: 115%;
     left: -17.5px;
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
     font-size: 12px;
     transition: visibility 0s linear 0.25s, opacity 0.25s ease;
 }
@@ -3224,7 +3214,7 @@ input:checked + .toggleSwitchSlider:before {
     border-radius: 4px;
     padding: 5px 10px;
     z-index: 1;
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
     font-size: 12px;
     transition: visibility 0s linear 0.25s, opacity 0.25s ease;
     bottom: calc(100% + 15px);
@@ -3541,7 +3531,7 @@ input:checked + .toggleSwitchSlider:before {
 
 /* Overlay title styles. */
 #overlayTitle {
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
     font-size: 20px;
     font-weight: bold;
     letter-spacing: 1px;
@@ -3567,7 +3557,7 @@ input:checked + .toggleSwitchSlider:before {
     background: none;
     border: 1px solid #ffffff;
     color: white;
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
     font-weight: bold;
     border-radius: 2px;
     padding: 0px 8.1px;
@@ -3619,7 +3609,7 @@ input:checked + .toggleSwitchSlider:before {
 /* Server selection header. */
 #serverSelectHeader,
 #accountSelectHeader {
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
     font-size: 20px;
     font-weight: bold;
     color: #fff;
@@ -3842,7 +3832,7 @@ input:checked + .toggleSwitchSlider:before {
     background: none;
     border: 1px solid #ffffff;
     color: white;
-    font-family: 'Minecraft';
+    font-family: 'Minecraftia-Regular';
     font-weight: bold;
     border-radius: 2px;
     padding: 0px 8.1px;
