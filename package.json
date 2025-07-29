@@ -12,13 +12,11 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "build": "electron-builder",
-    "dist": "electron-builder",
     "start": "electron .",
-    "dist": "electron-builder --config=electron-builder.json",
-    "dist:win": "electron-builder --windows --config=electron-builder.json",
-    "dist:mac": "electron-builder --mac --config=electron-builder.json",
-    "dist:linux": "electron-builder --linux --config=electron-builder.json",
+    "dist": "electron-builder build",
+    "dist:win": "npm run dist -- -w",
+    "dist:mac": "npm run dist -- -m",
+    "dist:linux": "npm run dist -- -l",
     "lint": "eslint --config .eslintrc.json ."
   },
   "engines": {
