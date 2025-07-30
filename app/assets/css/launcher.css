@@ -2879,11 +2879,13 @@ input:checked + .toggleSwitchSlider:before {
     width: 200%;
     top: 30%;
     left: 50%;
+    transform: translate(-50%, -50%);
     border-radius: 50%;
     box-shadow: 0 0 15px #43c628;
     animation: glow-grow 4s ease-out infinite;
     background: rgba(0, 0, 0, 0.15);
 }
+
 #image_seal_container[update]:before {
     animation-delay: 2s;
 }
