@@ -48,6 +48,8 @@
                     <!-- Microsoft auth accounts populated here. -->
                 </div>
             </div>
+
+
         </div>
         <div id="settingsTabMinecraft" class="settingsTab" style="display: none;">
             <div class="settingsTabHeader">
@@ -69,6 +71,18 @@
                 <div class="settingsFieldRight">
                     <label class="toggleSwitch">
                         <input type="checkbox" cValue="Fullscreen">
+                        <span class="toggleSwitchSlider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="settingsFieldContainer">
+                <div class="settingsFieldLeft">
+                    <span class="settingsFieldTitle"><%- lang('settings.launchDetachedTitle') %></span>
+                    <span class="settingsFieldDesc"><%- lang('settings.launchDetachedDesc') %></span>
+                </div>
+                <div class="settingsFieldRight">
+                    <label class="toggleSwitch">
+                        <input type="checkbox" cValue="LaunchDetached">
                         <span class="toggleSwitchSlider"></span>
                     </label>
                 </div>
@@ -276,6 +290,17 @@
                     <!-- The following must be included in third-party usage. -->
                     <a href="https://github.com/dscalzi/HeliosLauncher" id="settingsAboutSourceButton" class="settingsAboutButton">Credits</a>
                     <a href="<%- lang('settings.supportLink') %>" id="settingsAboutSupportButton" class="settingsAboutButton"><%- lang('settings.support') %></a>
+                </div>
+            </div>
+            <div class="settingsChangelogContainer">
+                <div class="settingsChangelogContent">
+                    <div class="settingsChangelogHeadline">
+                        <div class="settingsChangelogLabel"><%- lang('settings.releaseNotes') %></div>
+                        <div class="settingsChangelogTitle"><%- lang('settings.changelog') %></div>
+                    </div>
+                    <div class="settingsChangelogText">
+                        <%- lang('settings.noReleaseNotes') %>
+                    </div>
                 </div>
             </div>
         </div>
