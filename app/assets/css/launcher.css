@@ -2848,11 +2848,14 @@ input:checked + .toggleSwitchSlider:before {
     height: 200px;
     width: auto;
     position: fixed;
-    bottom: 270;
-    right: 380;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     box-sizing: border-box;
     border-radius: 50%;
+    z-index: 9999;
 }
+
 
 /* Logo container styles. */
 #image_seal_container {
@@ -2872,10 +2875,10 @@ input:checked + .toggleSwitchSlider:before {
     cursor: pointer;
     position: absolute;
     content: '';
-    height: 100%;
-    width: 100%;
-    top: 0%;
-    left: 0%;
+    height: 200%;
+    width: 200%;
+    top: 30%;
+    left: 50%;
     border-radius: 50%;
     box-shadow: 0 0 15px #43c628;
     animation: glow-grow 4s ease-out infinite;
@@ -3366,8 +3369,12 @@ input:checked + .toggleSwitchSlider:before {
     display: inline-flex;
 }
 
-/* The launch button. */
 #launch_button {
+    position: fixed;
+    top: 53%;
+    left: 45%;
+    transform: translate(-50%, -50%);
+    
     background: none;
     border: none;
     cursor: pointer;
@@ -3378,7 +3385,9 @@ input:checked + .toggleSwitchSlider:before {
     padding: 0px;
     transition: 0.25s ease;
     outline: none;
+    z-index: 9999;
 }
+
 #launch_button:hover,
 #launch_button:focus {
     text-shadow: 0px 0px 20px #fff, 0px 0px 20px #fff;
@@ -3396,10 +3405,13 @@ input:checked + .toggleSwitchSlider:before {
 /* Launch details main container, hidden until launch processing begins. */
 #launch_details {
     position: fixed;
-    bottom: 250;
-    right: 350;
+    top: 53%; /* zarovnáno stejně jako #launch_button */
+    left: 50%; /* 15 % šířky obrazovky doprava od středu */
+    transform: translate(-50%, -50%);
     display: none;
+    z-index: 9999;
 }
+
  
 /* Left side of launch details container, displays percentage and a divider. */
 #launch_details_left {
@@ -3426,6 +3438,10 @@ input:checked + .toggleSwitchSlider:before {
 
 /* Button which opens the server selection view. */
 #server_selection_button {
+    position: fixed;
+    top: 52%;
+    left: 55%;
+    transform: translate(-50%, -50%);
     background: none;
     border: none;
     outline: none;
@@ -3433,7 +3449,9 @@ input:checked + .toggleSwitchSlider:before {
     line-height: 24px;
     padding: 0px;
     transition: 0.25s ease;
+    z-index: 9999;
 }
+
 #server_selection_button:hover,
 #server_selection_button:focus {
     text-shadow: 0px 0px 20px #fff, 0px 0px 20px #fff, 0px 0px 20px #fff;

@@ -257,7 +257,7 @@ failedToggleTitle = "Failed to Toggle<br>One or More Drop-in Mods"
 okButton = "Okay"
 
 [js.settings.serverListing]
-mainServer = "Main Server"
+mainServer = "Main Version"
 
 [js.settings.java]
 selectedJava = "Selected: Java {version} ({vendor})"
