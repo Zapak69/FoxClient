@@ -149,7 +149,7 @@ function updateSelectedAccount(authUser){
             username = authUser.displayName
         }
         if(authUser.uuid != null){
-            document.getElementById('avatarContainer').style.backgroundImage = `url('https://mc-heads.net/body/${authUser.uuid}/right')`
+            document.getElementById('avatarContainer').style.backgroundImage = `url('https://minotar.net/helm/${authUser.displayName}/600.png')`
         }
     }
     user_text.innerHTML = username
