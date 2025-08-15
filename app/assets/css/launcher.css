@@ -12,6 +12,11 @@
     src: url('../fonts/Minecraftia-Regular.ttf');
 }
 
+@font-face {
+    font-family: 'Minecraft';
+    src: url('../fonts/Minecraft.ttf');
+}
+
 /*******************************************************************************
  *                                                                             *
  * Element Styles                                                              *
@@ -22,6 +27,24 @@
 body, html, div {
     margin: 0px;
     padding: 0px;
+}
+
+/* Subtle viewport fog overlay (apply with class 'bg-fog' on a top-level container) */
+.bg-fog { position: relative; }
+.bg-fog > * { position: relative; z-index: 1; }
+.bg-fog::before {
+    content: '';
+    position: absolute; /* keep it inside the landing container */
+    inset: 0;
+    pointer-events: none; /* don't block clicks */
+    z-index: 0; /* behind all landing content */
+    background:
+        /* Softer, eye-friendly fog */
+        radial-gradient(1100px 600px at 22% 12%, rgba(255,255,255,0.06), transparent 60%),
+        radial-gradient(1000px 520px at 78% 8%, rgba(255,255,255,0.05), transparent 62%),
+        radial-gradient(900px 560px at 50% 92%, rgba(255,255,255,0.04), transparent 60%),
+        linear-gradient(0deg, rgba(0,0,0,0.22), rgba(0,0,0,0.22));
+    filter: blur(4px);
 }
 
 /* Reset p presets. */
@@ -285,7 +308,7 @@ body, button {
 
 #welcomeDescription {
     text-align: justify;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 100;
     text-shadow: rgba(255, 255, 255, 0.75) 0px 0px 20px
 }
@@ -686,25 +709,13 @@ body, button {
     transition: border 500ms ease-out;
 }
 .checkmark {
-    display: none;
+    display: none !important;
 }
 .checkmark.draw:after {
-    animation-duration: 800ms;
-    animation-timing-function: ease;
-    animation-name: checkmark;
-    transform: scaleX(-1) rotate(135deg);
+    display: none !important;
 }
 .checkmark:after {
-    opacity: 1;
-    height: 8px;
-    width: 4px;
-    transform-origin: left top;
-    border-right: 2px solid #ffffff;
-    border-top: 2px solid #ffffff;
-    content: '';
-    left: 2px;
-    top: 8px;
-    position: absolute;
+    display: none !important;
 }
 @keyframes loader-spin {
     0% {
@@ -1043,7 +1054,8 @@ body, button {
     position: relative;
     height: 100%;
     display: flex;
-    background-color: rgba(0, 0, 0, 0.50);
+    background-color: rgba(0, 0, 0, 0.30);
+    backdrop-filter: blur(8px);
     transition: background-color 0.25s cubic-bezier(.02, .01, .47, 1);
 }
 
@@ -1088,10 +1100,11 @@ body, button {
 
 /* Navigation items outer container. */
 #settingsNavItemsContainer {
-    height: 85%;
+    flex: 1;
     display: flex;
     justify-content: center;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 /* Navigation items content container. */
@@ -1100,6 +1113,25 @@ body, button {
     display: flex;
     flex-direction: column;
     position: relative;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Custom scrollbar for navigation items */
+#settingsNavItemsContent::-webkit-scrollbar {
+    width: 4px;
+}
+#settingsNavItemsContent::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+#settingsNavItemsContent::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    transition: background 0.3s ease;
+}
+#settingsNavItemsContent::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
 }
 
 /* Navigation item shared styles. */
@@ -1108,21 +1140,40 @@ body, button {
     border: none;
     text-align: left;
     margin: 5px 0px;
-    padding: 0px 20px;
-    color: grey;
+    padding: 8px 20px;
+    color: rgba(128, 128, 128, 0.8);
     cursor: pointer;
     outline: none;
-    transition: 0.25s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
 }
 .settingsNavItem:hover,
 .settingsNavItem:focus {
-    color: #c1c1c1;
-    text-shadow: 0px 0px 20px #c1c1c1;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0px 0px 15px rgba(255, 255, 255, 0.3);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.1) 100%);
+    transform: translateX(4px) scale(1.01);
+}
+.settingsNavItem:hover::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 0 1px 1px 0;
 }
 .settingsNavItem[selected] {
     cursor: default;
-    color: white;
-    text-shadow: none;
+    color: rgba(255, 255, 255, 1);
+    text-shadow: 0px 0px 20px rgba(255, 255, 255, 0.4);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.15) 100%);
+    transform: translateX(6px) scale(1.02);
+    border-left: 3px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 /* Div to add some space between nav items. */
@@ -1132,42 +1183,108 @@ body, button {
 
 /* Content container for the done button. */
 #settingsNavContentBottom {
-    position: absolute;
-    top: 65%;
+    flex-shrink: 0;
+    padding: 20px 0 10px 0;
+    margin-top: 15px;
 }
 
 /* Settings navigational divider. */
 .settingsNavDivider {
     width: 75%;
     height: 1px;
-    background: rgba(126, 126, 126, 0.57);
-    margin-left: auto;
-    margin-bottom: 25px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+    margin: 0 auto 25px auto;
+    position: relative;
+    overflow: hidden;
+}
+.settingsNavDivider::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: dividerGlow 3s ease-in-out infinite;
+}
+@keyframes dividerGlow {
+    0%, 100% { left: -100%; opacity: 0; }
+    50% { left: 100%; opacity: 1; }
 }
 
-/* Settings done button styles. */
+/* Done Button with Subtle Waves */
 #settingsNavDone {
-    background: none;
-    border: none;
-    text-align: left;
-    margin: 5px 0px;
-    padding: 0px 20px;
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 6px;
+    text-align: center;
+    margin: 12px auto;
+    padding: 8px 16px;
     color: white;
     cursor: pointer;
     outline: none;
-    transition: 0.25s ease;
+    transition: all 0.3s ease;
+    position: relative;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+    font-size: 12px;
+    overflow: hidden;
+    line-height: 1;
 }
+
+/* Subtle wave effect inside button */
+#settingsNavDone::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.1) 20%, 
+        rgba(255, 255, 255, 0.2) 50%, 
+        rgba(255, 255, 255, 0.1) 80%, 
+        transparent 100%);
+    animation: subtleWave 4s ease-in-out infinite;
+    opacity: 0.7;
+}
+
+@keyframes subtleWave {
+    0% { left: -100%; }
+    50% { left: 100%; }
+    100% { left: -100%; }
+}
+
 #settingsNavDone:hover,
 #settingsNavDone:focus {
-    text-shadow: 0px 0px 20px white, 0px 0px 20px white, 0px 0px 20px white;
+    background: linear-gradient(135deg, #5CBF60 0%, #4CAF50 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(76, 175, 80, 0.4);
+    border-color: rgba(76, 175, 80, 0.5);
 }
+
+#settingsNavDone:hover::before {
+    animation-duration: 2s;
+    opacity: 1;
+}
+
 #settingsNavDone:active {
-    text-shadow: 0px 0px 20px rgba(255, 255, 255, 0.75), 0px 0px 20px rgba(255, 255, 255, 0.75), 0px 0px 20px rgba(255, 255, 255, 0.75);
-    color: rgba(255, 255, 255, 0.75);
+    background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
+    transform: translateY(0px) scale(0.98);
+    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.3);
 }
+
 #settingsNavDone:disabled {
-    color: rgba(255, 255, 255, 0.75);
+    background: rgba(128, 128, 128, 0.3);
+    color: rgba(255, 255, 255, 0.5);
     pointer-events: none;
+    box-shadow: none;
 }
 
 /* Right hand side of the settings container, for tabs. */
@@ -1694,7 +1811,9 @@ input:checked + .toggleSwitchSlider:before {
 }
 
 /* Mod elements sub-containers. */
-#settingsReqModsContainer,
+#settingsReqModsContainer {
+    display: none; /* Hide required mods section */
+}
 #settingsOptModsContainer,
 #settingsDropinModsContainer {
     padding-bottom: 25px;
@@ -2127,23 +2246,26 @@ input:checked + .toggleSwitchSlider:before {
     flex-direction: column;
     background: rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(126, 126, 126, 0.57);
-    border-radius: 3px;
-    width: 75%;
+    border-radius: 8px;
+    width: 85%;
     margin-bottom: 20px;
+    min-height: 120px;
 }
 
 /* About content. */
 #settingsAboutCurrentContent {
     display: flex;
     flex-direction: column;
-    padding: 15px;
+    padding: 20px;
+    gap: 15px;
 }
 
 /* About header elements. */
 #settingsAboutCurrentHeadline {
     display: flex;
     align-items: center;
-    padding-bottom: 5px;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
     border-bottom: 1px solid rgba(126, 126, 126, 0.57);
 }
 #settingsAboutLogo {
@@ -2159,42 +2281,45 @@ input:checked + .toggleSwitchSlider:before {
 /* Current version container. */
 #settingsAboutCurrentVersion {
     display: flex;
-    align-items: center;
-    padding-top: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0;
+    gap: 8px;
 }
 
 /* Checkmark next to the version information. */
 #settingsAboutCurrentVersionCheck {
-    border-radius: 50%;
-    background: #23aa23;
-    text-align: center;
-    font-weight: bold;
-    margin: 11px 12px;
-    color: white;
-    height: 15px;
-    width: 15px;
-    font-size: 12px;
-    line-height: 17px;
+    display: none !important;
 }
+
+
 
 /* Current version details container. */
 #settingsAboutCurrentVersionDetails {
-    margin-left: 10px;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 /* Release type text. */
 #settingsAboutCurrentVersionTitle {
-    font-size: 12px;
+    font-size: 14px;
     font-family: 'Minecraftia-Regular';
-    color: #23aa23;
+    color: #4CAF50;
     font-weight: bold;
+    line-height: 1.4;
 }
 
 /* Current version text. */
 #settingsAboutCurrentVersionLine {
-    font-size: 10px;
-    color: grey;
-    font-weight: bold;
+    font-size: 11px;
+    color: #ccc;
+    font-weight: 500;
+    line-height: 1.3;
+    margin-top: 2px;
 }
 
 /* About information links. */
@@ -2329,23 +2454,54 @@ input:checked + .toggleSwitchSlider:before {
     flex-direction: column;
     background: rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(126, 126, 126, 0.57);
-    border-radius: 3px;
-    width: 75%;
+    border-radius: 8px;
+    width: 85%;
     margin-bottom: 20px;
+    min-height: 120px;
+}
+
+/* Checkmark shown when update is available. */
+#settingsUpdateStatusCheck {
+    border-radius: 50%;
+    background: #4CAF50;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    height: 20px;
+    width: 20px;
+    font-size: 12px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translateY(2px);
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+    transition: all 0.3s ease;
+}
+
+/* Checkmark for update version. */
+#settingsUpdateVersionCheck {
+    display: none !important;
 }
 
 /* Update content. */
 #settingsUpdateStatusContent {
     display: flex;
     flex-direction: column;
-    padding: 15px;
+    padding: 20px;
+    gap: 15px;
 }
 
 /* Update header elements. */
 #settingsUpdateStatusHeadline {
     display: flex;
     align-items: center;
-    padding-bottom: 5px;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
     border-bottom: 1px solid rgba(126, 126, 126, 0.57);
 }
 #settingsUpdateTitle {
@@ -2358,42 +2514,63 @@ input:checked + .toggleSwitchSlider:before {
 #settingsUpdateVersion {
     display: flex;
     align-items: center;
-    padding: 10px 0px;
+    justify-content: flex-start;
+    padding: 10px 0px 15px 0px;
     border-bottom: 1px solid rgba(126, 126, 126, 0.57);
+    position: relative;
 }
 
 /* Checkmark next to the version information. */
 #settingsUpdateVersionCheck {
     border-radius: 50%;
-    background: #23aa23;
+    background: #4CAF50;
     text-align: center;
     font-weight: bold;
-    margin: 11px 12px;
     color: white;
-    height: 15px;
-    width: 15px;
+    height: 20px;
+    width: 20px;
     font-size: 12px;
-    line-height: 17px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translateY(2px);
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+    transition: all 0.3s ease;
 }
+
+
 
 /* Update version details container. */
 #settingsUpdateVersionDetails {
-    margin-left: 10px;
+    margin: 0;
+    margin-right: 35px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 /* Release type text. */
 #settingsUpdateVersionTitle {
-    font-size: 12px;
+    font-size: 14px;
     font-family: 'Minecraftia-Regular';
-    color: #23aa23;
+    color: #4CAF50;
     font-weight: bold;
+    line-height: 1.4;
 }
 
 /* Current version text. */
 #settingsUpdateVersionLine {
-    font-size: 10px;
-    color: grey;
-    font-weight: bold;
+    font-size: 11px;
+    color: #ccc;
+    font-weight: 500;
+    line-height: 1.3;
+    margin-top: 2px;
 }
 
 /* Update action container. */
@@ -2441,6 +2618,7 @@ input:checked + .toggleSwitchSlider:before {
     position: relative;
     transition: background 2s ease;
     overflow-y: hidden;
+    background: transparent; /* Remove overlay to keep background image unbrightened */
 }
 
 /* Upper content container. */
@@ -2466,13 +2644,17 @@ input:checked + .toggleSwitchSlider:before {
     display: inline-flex;
     width: 15%;
     height: 100%;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding-right: 15px;
+    padding-top: 15px;
 }
 
 /* Lower content container. */
 #landingContainer > #lower {
     height: 23%;
     display: flex;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    background: transparent; /* Removed bottom fog/gradient overlay */
 }
 #landingContainer > #lower > #left {
     position: relative;
@@ -2866,6 +3048,93 @@ input:checked + .toggleSwitchSlider:before {
     margin-top: 50px;
 }
 
+/* Green UPDATE banner in top left corner */
+#updateBanner {
+    position: fixed;
+    top: 30px;
+    left: 20px;
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    border-radius: 12px;
+    z-index: 10000;
+    box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: updateGlow 2s ease-in-out infinite;
+}
+
+#updateBannerContent {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    gap: 12px;
+}
+
+#updateDownloadIcon {
+    width: 24px;
+    height: 24px;
+    fill: white;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+#updateBannerText {
+    color: white;
+    font-family: 'Minecraftia-Regular';
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#updateTooltip {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(20, 20, 20, 0.95) 100%);
+    color: white;
+    font-family: 'Minecraftia-Regular';
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-top: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+#updateBanner:hover {
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+    box-shadow: 0 6px 30px rgba(34, 197, 94, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+#updateBanner:hover #updateTooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+#updateBanner:hover #updateDownloadIcon {
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+}
+
+@keyframes updateGlow {
+    0%, 100% { 
+        box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+    50% { 
+        box-shadow: 0 6px 25px rgba(34, 197, 94, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+}
+
 /* Logo container styles w/ update. */
 #image_seal_container[update]{
     cursor: pointer
@@ -2950,34 +3219,73 @@ input:checked + .toggleSwitchSlider:before {
     display: flex;
     flex-direction: column;
     position: relative;
-    top: 50px;
-    align-items: flex-start;
-    height: calc(100% - 50px);
+    top: 5px;
+    align-items: flex-end;
+    height: calc(100% - 5px);
 }
 
 /* Right hand user content container. */
 #user_content {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     box-sizing: border-box;
     position: relative;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(20, 20, 20, 0.4) 100%);
+    border-radius: 20px;
+    padding: 12px 16px;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+#user_content:hover {
+    background: linear-gradient(135deg, rgba(10, 10, 10, 0.7) 0%, rgba(30, 30, 30, 0.5) 100%);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
 }
 
 /* User profile avatar container. */
 #avatarContainer {
     border-radius: 50%;
-    border: 2px solid #cad7e1;
+    border: 2px solid rgba(255, 255, 255, 0.3);
     box-sizing: border-box;
-    background: rgba(1, 2, 1, 0.5);
-    height: 70px;
-    width: 70px;
-    box-shadow: 0px 0px 10px 0px rgb(0, 0, 0);
+    background: linear-gradient(135deg, rgba(40, 40, 40, 0.9) 0%, rgba(20, 20, 20, 0.9) 100%);
+    height: 48px;
+    width: 48px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.05);
     overflow: hidden;
     position: relative;
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#avatarContainer:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    animation: gentle-spin 3s ease-in-out infinite;
+}
+
+/* Gentle spin animation for avatar hover */
+@keyframes gentle-spin {
+    0% { 
+        transform: scale(1.05) rotate(0deg); 
+    }
+    25% { 
+        transform: scale(1.08) rotate(3deg); 
+    }
+    50% { 
+        transform: scale(1.1) rotate(0deg); 
+    }
+    75% { 
+        transform: scale(1.08) rotate(-3deg); 
+    }
+    100% { 
+        transform: scale(1.05) rotate(0deg); 
+    }
 }
 
 /* Avatar edit overlay. */
@@ -2990,8 +3298,9 @@ input:checked + .toggleSwitchSlider:before {
     align-items: center;
     transition: 0.25s ease;
     font-weight: bold;
-    letter-spacing: 2px;
-    background-color: rgba(0, 0, 0, 0.35);
+    letter-spacing: 1px;
+    font-size: 8px;
+    background-color: rgba(0, 0, 0, 0.7);
     -webkit-user-select: none;
     border: none;
     cursor: pointer;
@@ -3009,15 +3318,25 @@ input:checked + .toggleSwitchSlider:before {
 
 /* User profile name text. */
 #user_text {
-    font-size: 12px;
-    min-width: 135px;
-    font-weight: 900;
-    letter-spacing: 1px;
-    text-shadow: 0px 0px 20px black;
-    position: absolute;
-    right: 95px;
+    font-size: 14px;
+    min-width: 110px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.1);
+    margin-right: 14px;
     text-align: right;
     -webkit-user-select: initial;
+    user-select: initial;
+    color: rgba(255, 255, 255, 0.92);
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.05) 100%);
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+#user_text:hover {
+    color: rgba(255, 255, 255, 1);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9), 0 0 25px rgba(255, 255, 255, 0.2);
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 100%);
 }
 
 /* Social media icon content container. */
@@ -3025,10 +3344,23 @@ input:checked + .toggleSwitchSlider:before {
     position: relative;
     display: flex;
     flex-direction: column;
-    margin-top: 25px;
-    height: calc(100% - 95px);
-    width: 70px;
-    align-items: center;
+    margin-top: 15px;
+    height: auto;
+    width: 120px;
+    align-items: flex-start;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(20, 20, 20, 0.3) 100%);
+    border-radius: 12px;
+    padding: 10px 12px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: all 0.3s ease;
+    transform: scale(1.1);
+}
+#mediaContent:hover {
+    background: linear-gradient(180deg, rgba(10, 10, 10, 0.5) 0%, rgba(30, 30, 30, 0.4) 100%);
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 /* Social Media Icon division containers. */
@@ -3040,32 +3372,57 @@ input:checked + .toggleSwitchSlider:before {
 /* Container object which wraps an icon to ensure fluid transitions. */
 .mediaContainer {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    height: 27px;
+    height: 18px;
+    margin: 1.5px 0;
+    width: 100%;
+    gap: 4px;
 }
 
 /* Divider bar between the external and internal icons. */
 .mediaDivider {
     height: 1px;
-    width: 14px;
-    background: rgb(255, 255, 255);
-    margin: 10px 0px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.6);
+    margin: 4px 0px;
 }
 
 /* Social media icon shared styles. */
 .mediaSVG {
-    fill: #ffffff;
+    fill: rgba(255, 255, 255, 0.8);
     height: 12px;
-    transition: 0.25s ease;
+    width: 20px;
+    transition: all 0.25s ease;
     cursor: pointer;
-    height: 12px;
-    width: 25px;
+    flex-shrink: 0;
+}
+
+/* Media label styles */
+.mediaLabel {
+    font-size: 9px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.3px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+.mediaLabel:hover {
+    color: rgba(255, 255, 255, 1);
+    background: rgba(255, 255, 255, 0.1);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 .mediaSVG:hover,
 .mediaURL:focus .mediaSVG,
 .mediaSVG:active {
-    height: 20px;
+    fill: rgba(255, 255, 255, 1);
+    height: 14px;
+    width: 22px;
+    transform: translateY(-1px);
 }
 
 /* Social media URL shared styles. */
@@ -3089,47 +3446,24 @@ input:checked + .toggleSwitchSlider:before {
 
 /* Settings icon colors. */
 #settingsSVG {
-    stroke: #ffffff;
-    height: 15px;
+    stroke: rgba(255, 255, 255, 0.8);
+    height: 14px;
+    width: 20px;
+    transition: all 0.25s ease;
 }
 .mediaButton:hover #settingsSVG,
 .mediaButton:focus #settingsSVG,
 .mediaButton:active #settingsSVG {
-    height: 23px;
+    stroke: rgba(255, 255, 255, 1);
+    height: 16px;
+    width: 22px;
+    transform: translateY(-1px);
 }
 
-/* Settings tooltip styles. */
-#settingsTooltip {
-    visibility: hidden;
-    opacity: 0;
-    width: 75px;
-    height: 20px;
-    background-color: rgba(0, 0, 0, 0.75);
-    text-align: center;
-    border-radius: 4px;
-    position: absolute;
-    z-index: 1;
-    right: 130%;
-    font-size: 12px;
-    line-height: 20px;
-    transition: visibility 0s linear 0.25s, opacity 0.25s ease;
-}
-#settingsTooltip::after {
-    content: " ";
-    position: absolute;
-    top: 50%;
-    left: 100%;
-    margin-top: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent transparent transparent rgba(0, 0, 0, 0.75);
-}
-.mediaButton:hover #settingsTooltip,
-.mediaButton:focus #settingsTooltip,
-.mediaButton:active #settingsTooltip {
-    visibility: visible;
-    opacity: 1;
-    transition-delay:0s;
+/* Media label hover effects */
+.mediaContainer:hover .mediaLabel {
+    color: rgba(255, 255, 255, 1);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8), 0 0 8px rgba(255, 255, 255, 0.3);
 }
 
 /* Youtube icon colors. */
@@ -3363,51 +3697,98 @@ input:checked + .toggleSwitchSlider:before {
 * Landing View (Bottom Styles) | Right Content
 * * */
 
-/* Main launch content container. */
+/* Main launch content container: center group (PLAY + chevron) */
 #landingContainer > #lower > #right #launch_content {
     position: fixed;
-    bottom: 250;
-    right: 380;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 9999;
 }
 
 #launch_button {
-    position: fixed;
-    top: 53%;
-    left: 45%;
-    transform: translate(-50%, -50%);
-    
-    background: none;
+    background: #39ff14; /* neon green */
     border: none;
     cursor: pointer;
+    border-radius: 12px;
+    min-width: 200px;
+    height: 52px; /* same height as chevron */
+    padding: 10px 18px; /* slightly larger for readability */
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    transition: transform 0.15s ease, filter 0.2s ease, box-shadow 0.2s ease;
+    outline: none;
+    color: #ffffff;
+    /* green inner glow + very strong ambient/drop shadow + subtle neon */
+    box-shadow:
+        0 0 0 2px rgba(57,255,20,0.18) inset,
+        0 4px 12px rgba(57,255,20,0.12),
+        0 0 18px rgba(57,255,20,0.22), /* soft outer neon */
+        0 16px 40px rgba(0,0,0,0.66),
+        0 8px 18px rgba(0,0,0,0.42),
+        0 2px 2px rgba(0,0,0,0.45);
+    font-family: 'Minecraft', 'Minecraftia-Regular', sans-serif;
+}
+#launch_button .launch_title {
     font-weight: 900;
     letter-spacing: 2px;
-    text-shadow: 0px 0px 0px #bebcbb;
-    font-size: 20px;
-    padding: 0px;
-    transition: 0.25s ease;
-    outline: none;
-    z-index: 9999;
+    text-shadow:
+        0 2px 4px rgba(0,0,0,0.65),
+        0 1px 0 rgba(0,0,0,0.55);
+    font-size: 21px; /* bigger PLAY text */
+    line-height: 1;
+    margin-top: 0; /* tighter alignment */
+}
+#launch_button .launch_subtext {
+    font-size: 12px; /* improved readability */
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-shadow:
+        0 1px 2px rgba(0,0,0,0.6),
+        0 1px 0 rgba(0,0,0,0.5);
+    opacity: 1;
+    margin-top: 0; /* tighter alignment */
 }
 
 #launch_button:hover,
 #launch_button:focus {
-    text-shadow: 0px 0px 20px #fff, 0px 0px 20px #fff;
+    transform: translateZ(0) scale(1.01);
+    box-shadow:
+        0 0 0 2px rgba(57,255,20,0.24) inset,
+        0 0 22px rgba(57,255,20,0.30), /* stronger outer neon on hover */
+        0 6px 16px rgba(57,255,20,0.16),
+        0 26px 64px rgba(0,0,0,0.72),
+        0 10px 22px rgba(0,0,0,0.46),
+        0 3px 2px rgba(0,0,0,0.50);
 }
 #launch_button:active {
-    color: #c7c7c7;
-    text-shadow: 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7;
+    transform: translateZ(0) scale(0.99);
+    filter: brightness(0.96);
+    box-shadow:
+        0 0 0 2px rgba(57,255,20,0.20) inset,
+        0 0 16px rgba(57,255,20,0.24),
+        0 4px 12px rgba(57,255,20,0.14),
+        0 16px 40px rgba(0,0,0,0.58),
+        0 6px 14px rgba(0,0,0,0.38),
+        0 2px 2px rgba(0,0,0,0.44);
 }
 #launch_button:disabled {
-    color: #c7c7c7;
     cursor: default;
     pointer-events: none;
+    filter: grayscale(0.2) brightness(0.85);
+    box-shadow: 0 0 0 4px rgba(57,255,20,0.2) inset, 0 4px 12px rgba(57,255,20,0.2);
 }
 
 /* Launch details main container, hidden until launch processing begins. */
 #launch_details {
     position: fixed;
-    top: 53%; /* zarovnáno stejně jako #launch_button */
+    top: 59%; /* zarovnáno stejně jako #launch_button */
     left: 50%; /* 15 % šířky obrazovky doprava od středu */
     transform: translate(-50%, -50%);
     display: none;
@@ -3438,30 +3819,36 @@ input:checked + .toggleSwitchSlider:before {
     justify-content: center;
 }
 
-/* Button which opens the server selection view. */
-#server_selection_button {
-    position: fixed;
-    top: 52%;
-    left: 55%;
-    transform: translate(-50%, -50%);
-    background: none;
+/* Dark chevron button next to PLAY */
+#server_selection_button.server_select_icon {
+    background: #3a3a3a;
     border: none;
     outline: none;
     cursor: pointer;
-    line-height: 24px;
-    padding: 0px;
-    transition: 0.25s ease;
-    z-index: 9999;
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s ease, filter 0.2s ease, box-shadow 0.2s ease;
 }
+#server_selection_button .chevron_svg {
+    width: 32px; height: 32px;
+    transform: rotate(0deg);
+    transform-origin: 50% 50%;
+    transition: transform 0.2s ease;
+}
+#server_selection_button .chevron_svg path {
+    stroke-width: 3.2;
+}
+#server_selection_button:hover { transform: translateZ(0) scale(1.05); }
+#server_selection_button:hover .chevron_svg { transform: rotate(90deg); }
+#server_selection_button:active { transform: translateZ(0) scale(0.98); filter: brightness(0.9); }
 
-#server_selection_button:hover,
-#server_selection_button:focus {
-    text-shadow: 0px 0px 20px #fff, 0px 0px 20px #fff, 0px 0px 20px #fff;
-}
-#server_selection_button:active {
-    color: #c7c7c7;
-    text-shadow: 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7, 0px 0px 20px #c7c7c7;
-}
+/* remove legacy text chevron styles */
+
+/* No hover effects for chevron - static only */
 
 /* Progress bar styles. */
 #launch_progress[value] {
@@ -3572,44 +3959,96 @@ input:checked + .toggleSwitchSlider:before {
     justify-content: center;
 }
 
-/* Overlay acknowledge button styles. */
+/* Beautiful Select Button */
 #overlayAcknowledge {
-    background: none;
-    border: 1px solid #ffffff;
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    border: 1px solid rgba(76, 175, 80, 0.3);
     color: white;
     font-family: 'Minecraftia-Regular';
-    font-weight: bold;
-    border-radius: 2px;
-    padding: 0px 8.1px;
+    font-weight: 500;
+    border-radius: 10px;
+    padding: 12px 24px;
     cursor: pointer;
-    transition: 0.25s ease;
-}
-#overlayAcknowledge:hover,
-#overlayAcknowledge:focus {
-    box-shadow: 0px 0px 10px 0px #fff;
-    outline: none;
-}
-#overlayAcknowledge:active {
-    border-color: rgba(255, 255, 255, 0.75);
-    color: rgba(255, 255, 255, 0.75);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3), 
+                0 2px 8px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
 }
 
-/* Overlay dismiss option styles. */
+/* Subtle wave effect for Select button */
+#overlayAcknowledge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.1) 50%, 
+        transparent 100%);
+    animation: buttonWave 3s ease-in-out infinite;
+}
+
+@keyframes buttonWave {
+    0% { left: -100%; }
+    50% { left: 100%; }
+    100% { left: -100%; }
+}
+
+#overlayAcknowledge:hover,
+#overlayAcknowledge:focus {
+    background: linear-gradient(135deg, #5CBF60 0%, #4CAF50 100%);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4), 
+                0 4px 12px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    outline: none;
+}
+
+#overlayAcknowledge:active {
+    background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
+    transform: translateY(0px) scale(0.98);
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3), 
+                inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Elegant Cancel Button */
 #overlayDismiss {
-    font-weight: bold;
-    font-size: 10px;
+    font-weight: 500;
+    font-size: 11px;
     text-decoration: none;
-    padding-top: 2.5px;
-    background: none;
-    border: none;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
     outline: none;
     cursor: pointer;
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
+
 #overlayDismiss:hover {
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
+
 #overlayDismiss:active {
-    color: rgba(165, 165, 165, 0.75);
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.03);
+    transform: translateY(0px) scale(0.98);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* * *
@@ -3630,10 +4069,22 @@ input:checked + .toggleSwitchSlider:before {
 #serverSelectHeader,
 #accountSelectHeader {
     font-family: 'Minecraftia-Regular';
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
     color: #fff;
-    margin-bottom: 25px;
+    margin-bottom: 40px;
+    text-shadow: 0 3px 15px rgba(0, 0, 0, 0.9), 0 0 30px rgba(255, 255, 255, 0.2);
+    letter-spacing: 1.5px;
+    background: linear-gradient(45deg, #ffffff, #e0e0e0, #ffffff);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: headerShimmer 3s ease-in-out infinite;
+}
+
+@keyframes headerShimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
 }
 
 /* Wrapper div for the list of available servers. */
@@ -3651,7 +4102,13 @@ input:checked + .toggleSwitchSlider:before {
 #serverSelectListScrollable,
 #accountSelectListScrollable {
     padding: 0px 5px;
-    overflow-y: scroll;
+    overflow-y: auto;
+    /* Smoother native scrolling and isolation to reduce layout thrash */
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
+    contain: content;
+    will-change: scroll-position;
+    -webkit-overflow-scrolling: touch;
 }
 #serverSelectListScrollable::-webkit-scrollbar,
 #accountSelectListScrollable::-webkit-scrollbar {
@@ -3669,52 +4126,113 @@ input:checked + .toggleSwitchSlider:before {
 
 /* Content container for a server listing. */
 .serverListing {
-    border: none;
-    padding: 0px;
-    width: 375px;
-    min-height: 60px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 16px;
+    margin: 15px 0;
+    width: 400px;
+    min-height: 75px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    opacity: 0.6;
-    transition: 0.25s ease;
+    opacity: 0.85;
+    /* Heavy blur is costly during scroll; avoid it by default */
+    filter: none;
+    /* Transition only transform/opacity for better GPU utilization */
+    transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
     cursor: pointer;
     position: relative;
-    background: rgba(131, 131, 131, 0.25);
+    background: linear-gradient(135deg, rgba(30, 35, 45, 0.35) 0%, rgba(15, 20, 30, 0.5) 50%, rgba(20, 25, 35, 0.45) 100%);
+    /* Reduce backdrop blur to lower composite cost */
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22),
+                0 2px 8px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+    /* Hint compositor */
+    will-change: transform;
+    transform: translateZ(0);
 }
 .serverListing[selected] {
     cursor: default;
     opacity: 1.0;
+    filter: blur(0px);
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(22, 163, 74, 0.25) 50%, rgba(21, 128, 61, 0.2) 100%);
+    border-color: rgba(34, 197, 94, 0.4);
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.15), 
+                0 3px 10px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 0 0 1px rgba(34, 197, 94, 0.2);
+    transform: scale(1.02);
+}
+
+@keyframes selectedGlow {
+    0% { box-shadow: 0 12px 40px rgba(34, 197, 94, 0.2), 0 6px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 0 2px rgba(34, 197, 94, 0.3); }
+    100% { box-shadow: 0 15px 45px rgba(34, 197, 94, 0.3), 0 8px 25px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 0 2px rgba(34, 197, 94, 0.5); }
 }
 .serverListing:hover,
 .serverListing:focus {
     outline: none;
     opacity: 1.0;
+    filter: none;
+    background: linear-gradient(135deg, rgba(45, 50, 65, 0.45) 0%, rgba(30, 35, 50, 0.6) 50%, rgba(35, 40, 55, 0.55) 100%);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22),
+                0 3px 12px rgba(0, 0, 0, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px) scale(1.005);
 }
 
 .accountListing {
     color: white;
-    border: 1px solid rgba(126, 126, 126, 0.57);
-    border-radius: 3px;
-    padding: 5px 45px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    padding: 8px 45px;
+    margin: 15px 0;
     width: 250px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    opacity: 0.6;
-    transition: 0.25s ease;
+    opacity: 0.85;
+    filter: none;
+    transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
     cursor: pointer;
     position: relative;
-    background: rgba(0, 0, 0, 0.25);
+    background: linear-gradient(135deg, rgba(30, 30, 30, 0.5) 0%, rgba(10, 10, 10, 0.7) 100%);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    will-change: transform;
+    transform: translateZ(0);
 }
 .accountListing[selected] {
     cursor: default;
     opacity: 1.0;
+    filter: blur(0px);
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(22, 163, 74, 0.25) 50%, rgba(21, 128, 61, 0.2) 100%);
+    border-color: rgba(34, 197, 94, 0.4);
+    box-shadow: 0 12px 40px rgba(34, 197, 94, 0.2), 
+                0 6px 20px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                0 0 0 2px rgba(34, 197, 94, 0.3);
+    transform: scale(1.02);
 }
 .accountListing:hover,
 .accountListing:focus {
     outline: none;
     opacity: 1.0;
+    filter: none;
+    background: linear-gradient(135deg, rgba(40, 40, 40, 0.6) 0%, rgba(20, 20, 20, 0.8) 100%);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transform: translateY(-1px) scale(1.005);
+}
+
+/* While list is actively scrolling, disable expensive effects for smoother FPS */
+#serverSelectList.scrolling .serverListing,
+#accountSelectList.scrolling .accountListing {
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    transition: transform 0.15s ease, opacity 0.15s ease !important;
 }
 
 .accountListingName {
@@ -3727,23 +4245,51 @@ input:checked + .toggleSwitchSlider:before {
 /* Add spacing between server listings. */
 #serverSelectListScrollable > .serverListing:not(:first-child):not(:last-child),
 #accountSelectListScrollable > .accountListing:not(:first-child):not(:last-child) {
-    margin: 5px 0px;
+    margin: 20px 0px;
 }
 #serverSelectListScrollable > .serverListing:first-child,
 #accountSelectListScrollable > .accountListing:first-child {
-    margin-bottom: 5px;
+    margin-bottom: 20px;
 }
 #serverSelectListScrollable > .serverListing:last-child,
 #accountSelectListScrollable > .accountListing:last-child {
-    margin-top: 5px;
+    margin-top: 20px;
 }
 
 /* Server listing image. */
 .serverListingImg {
-    margin: 0px 10px 0px 5px;
-    border: 1px solid #fff;
-    height: 50px;
-    width: 50px;
+    margin: 0px 18px 0px 8px;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    height: 56px;
+    width: 56px;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.serverListingImg::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+    animation: imageShimmer 3s ease-in-out infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.serverListing:hover .serverListingImg::before {
+    opacity: 1;
+}
+
+@keyframes imageShimmer {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
 }
 
 /* Content container for the server listing's details. */
@@ -3757,16 +4303,21 @@ input:checked + .toggleSwitchSlider:before {
 
 /* The name of the server listing. */
 .serverListingName {
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    margin-bottom: 2px;
 }
 
 /* Description for the server listing. */
 .serverListingDescription {
-    font-size: 10px;
-    line-height: 10px;
-    font-weight: bold;
+    font-size: 11px;
+    line-height: 14px;
+    font-weight: 500;
     text-align: left;
+    opacity: 0.85;
+    letter-spacing: 0.2px;
 }
 
 /* Content container for the server listing's information. */
@@ -3783,8 +4334,13 @@ input:checked + .toggleSwitchSlider:before {
     display: flex;
     justify-content: center;
     align-items: center;
-    line-height: 12px;
-    height: 12px;
+    line-height: 14px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 2px 6px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
     border-radius: 2px;
     background: rgba(31, 140, 11, 0.8);
     padding: 0px 2px;
@@ -3843,59 +4399,90 @@ input:checked + .toggleSwitchSlider:before {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 25px;
+    margin-top: 35px;
 }
 
-/* Server selection confirm button styles. */
+/* Clean Outline Select Button */
 #serverSelectConfirm,
 #accountSelectConfirm {
-    background: none;
-    border: 1px solid #ffffff;
-    color: white;
-    font-family: 'Minecraftia-Regular';
-    font-weight: bold;
-    border-radius: 2px;
-    padding: 0px 8.1px;
+    background: transparent;
+    border: 2px solid #4CAF50;
+    color: #4CAF50;
+    font-family: 'Minecraft', 'Minecraftia-Regular', sans-serif;
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 14px 28px 10px 28px;
     cursor: pointer;
-    transition: 0.25s ease;
-    min-height: 20.67px;
+    transition: all 0.2s ease;
+    min-height: 44px;
+    font-size: 17px;
+    letter-spacing: 0.3px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    vertical-align: baseline;
 }
+
 #serverSelectConfirm:hover,
 #serverSelectConfirm:focus,
 #accountSelectConfirm:hover,
 #accountSelectConfirm:focus {
-    box-shadow: 0px 0px 10px 0px #fff;
+    background: rgba(76, 175, 80, 0.1);
+    color: white;
+    border-color: #4CAF50;
     outline: none;
-}
-#serverSelectConfirm:active,
-#accountSelectConfirm:active {
-    border-color: rgba(255, 255, 255, 0.75);
-    color: rgba(255, 255, 255, 0.75);
 }
 
-/* Server selection cancel button styles. */
+#serverSelectConfirm:active,
+#accountSelectConfirm:active {
+    background: rgba(76, 175, 80, 0.2);
+    transform: translateY(1px);
+}
+
+/* Clean Outline Cancel Button */
 #serverSelectCancel,
 #accountSelectCancel {
-    font-weight: bold;
-    font-size: 10px;
+    font-family: 'Minecraft', 'Minecraftia-Regular', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
     text-decoration: none;
-    padding-top: 2.5px;
-    color: rgba(202, 202, 202, 0.75);
-    transition: 0.25s ease;
-    background: none;
-    border: none;
+    padding: 14px 28px 10px 28px;
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.2s ease;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
     outline: none;
     cursor: pointer;
+    margin-top: 8px;
+    letter-spacing: 0.3px;
+    line-height: 1;
+    font-size: 17px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    vertical-align: baseline;
+    min-height: 32px;
 }
+
 #serverSelectCancel:hover,
 #serverSelectCancel:focus,
 #accountSelectCancel:hover,
 #accountSelectCancel:focus {
-    color: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.5);
+    outline: none;
 }
+
 #serverSelectCancel:active,
 #accountSelectCancel:active {
-    color: rgba(165, 165, 165, 0.75);
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(1px);
 }
 
 /*******************************************************************************
@@ -3959,4 +4546,79 @@ input:checked + .toggleSwitchSlider:before {
 /* Class which is applied when the spinner image is spinning. */
 .rotating {
     animation: rotating 10s linear infinite;
+}
+
+/* Update Banner - wyrównanie tekstu z ikoną */
+#updateBannerContent {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#updateDownloadIcon {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+#updateBannerText {
+    line-height: 10px;
+    vertical-align: middle;
+}
+
+/* Media buttons - naprawienie przycinania ikon */
+.mediaButton,
+.mediaURL {
+    width: 38px;
+    height: 38px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 7px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-sizing: border-box;
+    overflow: visible; /* Zapobiega przycinaniu ikon */
+}
+
+.mediaButton:hover,
+.mediaURL:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.mediaSVG {
+    width: 18px;
+    height: 18px;
+    fill: white;
+    display: block;
+    margin: auto;
+    flex-shrink: 0;
+    overflow: visible; /* Zapobiega przycinaniu SVG */
+}
+
+/* Dodatkowe style dla kontenerów żeby nie przycinały */
+.mediaContainer {
+    margin-bottom: 15px;
+    overflow: visible;
+}
+
+.mediaLabel {
+    display: block;
+    text-align: center;
+    font-size: 11px;
+    color: white;
+    margin-top: 6px; /* Małutki odstęp między ikoną a tekstem */
+}
+
+/* Większe odstępy między elementami menu */
+.mediaContainer {
+    margin-bottom: 15px; /* Większy odstęp między każdym elementem */
+}
+
+.mediaDivider {
+    margin: 20px 0; /* Większy odstęp przy dividerze */
 }

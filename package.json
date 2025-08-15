@@ -1,10 +1,10 @@
 {
   "name": "foxclient",
-  "version": "1.8.6",
+  "version": "1.9.1",
   "productName": "FoxClient Launcher",
   "description": "Best CPVP client",
   "author": "Zipp",
-  "license": "UNLICENSED",
+  "license": "All rights reserved.",
   "homepage": "https://www.foxclient.eu",
   "bugs": {
     "url": "https://discord.gg/crystalcommunity"

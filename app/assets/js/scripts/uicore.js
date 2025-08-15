@@ -48,6 +48,9 @@ if(!isDev){
             case 'update-available':
                 loggerAutoUpdater.info('New update available', info.version)
                 
+                // Pokaż banner aktualizacji
+                showUpdateBanner()
+                
                 if(process.platform === 'Zapak69'){
                     info.darwindownload = `https://github.com/Zapak69/FoxClient/releases/download/v${info.version}/FoxClient-${process.arch === 'arm64' ? '-arm64' : '-x64'}.dmg`
                     showUpdateUI(info)
@@ -62,6 +65,9 @@ if(!isDev){
                         ipcRenderer.send('autoUpdateAction', 'installUpdateNow')
                     }
                 })
+                
+                // Pokaż banner aktualizacji (gotowa do instalacji)
+                showUpdateBanner()
                 showUpdateUI(info)
                 break
             case 'update-not-available':
@@ -212,3 +218,22 @@ document.addEventListener('keydown', function (e) {
         window.toggleDevTools()
     }
 })
+
+/**
+ * Pokazuje banner aktualizacji gdy jest dostępna aktualizacja
+ */
+function showUpdateBanner() {
+    const updateBanner = document.getElementById('updateBanner')
+    if (updateBanner) {
+        updateBanner.style.display = 'block'
+        loggerAutoUpdater.info('Update banner shown')
+        
+        // Dodaj event listener dla kliknięcia w banner
+        updateBanner.onclick = () => {
+            // Przejdź do ustawień aktualizacji
+            switchView(getCurrentView(), VIEWS.settings, 500, 500, () => {
+                settingsNavItemListener(document.getElementById('settingsNavUpdate'), false)
+            })
+        }
+    }
+}

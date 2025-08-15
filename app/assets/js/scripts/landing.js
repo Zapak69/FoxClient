@@ -38,6 +38,7 @@ const launch_progress         = document.getElementById('launch_progress')
 const launch_progress_label   = document.getElementById('launch_progress_label')
 const launch_details_text     = document.getElementById('launch_details_text')
 const server_selection_button = document.getElementById('server_selection_button')
+const launch_button_subtext   = document.getElementById('launch_button_subtext')
 const user_text               = document.getElementById('user_text')
 
 const loggerLanding = LoggerUtil.getLogger('Landing')
@@ -133,6 +134,14 @@ document.getElementById('settingsMediaButton').onclick = async e => {
     switchView(getCurrentView(), VIEWS.settings)
 }
 
+// Bind mods button
+document.getElementById('modsMediaButton').onclick = async e => {
+    await prepareSettings()
+    switchView(getCurrentView(), VIEWS.settings, 500, 500, () => {
+        settingsNavItemListener(document.querySelector('[rSc="settingsTabMods"]'), false)
+    })
+}
+
 // Bind avatar overlay button.
 document.getElementById('avatarOverlay').onclick = async e => {
     await prepareSettings()
@@ -140,6 +149,39 @@ document.getElementById('avatarOverlay').onclick = async e => {
         settingsNavItemListener(document.getElementById('settingsNavAccount'), false)
     })
 }
+
+// Make media labels clickable
+document.addEventListener('DOMContentLoaded', () => {
+    // Settings text clickable
+    const settingsLabel = document.querySelector('#settingsMediaContainer .mediaLabel')
+    if (settingsLabel) {
+        settingsLabel.onclick = () => document.getElementById('settingsMediaButton').click()
+    }
+    
+    // Mods text clickable  
+    const modsLabel = document.querySelector('#modsMediaContainer .mediaLabel')
+    if (modsLabel) {
+        modsLabel.onclick = () => document.getElementById('modsMediaButton').click()
+    }
+    
+    // Website text clickable
+    const websiteLabel = document.querySelector('#linkMediaContainer .mediaLabel')
+    if (websiteLabel) {
+        websiteLabel.onclick = () => document.querySelector('#linkURL').click()
+    }
+    
+    // YouTube text clickable
+    const youtubeLabel = document.querySelector('#youtubeMediaContainer .mediaLabel')
+    if (youtubeLabel) {
+        youtubeLabel.onclick = () => document.querySelector('#youtubeURL').click()
+    }
+    
+    // Discord text clickable
+    const discordLabel = document.querySelector('#discordMediaContainer .mediaLabel')
+    if (discordLabel) {
+        discordLabel.onclick = () => document.querySelector('#discordURL').click()
+    }
+})
 
 // Bind selected account
 function updateSelectedAccount(authUser){
@@ -163,14 +205,19 @@ function updateSelectedServer(serv){
     }
     ConfigManager.setSelectedServer(serv != null ? serv.rawServer.id : null)
     ConfigManager.save()
-    server_selection_button.innerHTML = '&#8226; ' + (serv != null ? serv.rawServer.name : Lang.queryJS('landing.noSelection'))
+    // Show version/server text inside the green PLAY button subtext
+    if(launch_button_subtext){
+        launch_button_subtext.innerHTML = (serv != null ? serv.rawServer.name : Lang.queryJS('landing.noSelection'))
+    }
     if(getCurrentView() === VIEWS.settings){
         animateSettingsTabRefresh()
     }
     setLaunchEnabled(serv != null)
 }
 // Real text is set in uibinder.js on distributionIndexDone.
-server_selection_button.innerHTML = '&#8226; ' + Lang.queryJS('landing.selectedServer.loading')
+if(launch_button_subtext){
+    launch_button_subtext.innerHTML = Lang.queryJS('landing.selectedServer.loading')
+}
 server_selection_button.onclick = async e => {
     e.target.blur()
     await toggleServerSelection(true)

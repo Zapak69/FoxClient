@@ -316,9 +316,43 @@ function populateAccountListings(){
 async function prepareServerSelectionList(){
     await populateServerListings()
     setServerListingHandlers()
+    // Optimize scroll performance during active scrolling
+    addScrollSmoothing('serverSelectList', 'serverSelectListScrollable')
 }
 
 function prepareAccountSelectionList(){
     populateAccountListings()
     setAccountListingHandlers()
+    // Optimize scroll performance during active scrolling
+    addScrollSmoothing('accountSelectList', 'accountSelectListScrollable')
+}
+
+/**
+ * Add a 'scrolling' class to the container while the inner element is scrolling,
+ * then remove it after a short debounce. Pairs with CSS to disable heavy effects.
+ * @param {string} containerId The container element id receiving the class.
+ * @param {string} scrollableId The scrollable child element id to listen on.
+ */
+function addScrollSmoothing(containerId, scrollableId){
+    const container = document.getElementById(containerId)
+    const scrollable = document.getElementById(scrollableId)
+    if(!container || !scrollable){
+        return
+    }
+    // Prevent multiple listeners
+    if(scrollable.__scrollOptBound){
+        return
+    }
+    let scrollTO
+    const onScroll = () => {
+        container.classList.add('scrolling')
+        if(scrollTO){
+            clearTimeout(scrollTO)
+        }
+        scrollTO = setTimeout(() => {
+            container.classList.remove('scrolling')
+        }, 150)
+    }
+    scrollable.addEventListener('scroll', onScroll, { passive: true })
+    scrollable.__scrollOptBound = true
 }
