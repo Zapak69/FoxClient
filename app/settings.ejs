@@ -110,16 +110,18 @@
 
                     </div>
                 </div>
-                <div id="settingsOptModsContainer">
-                    <div class="settingsModsHeader"><%- lang('settings.optionalMods') %></div>
-                    <div id="settingsOptModsContent">
-                        
-                    </div>
-                </div>
+                <!-- Move Custom Mods section above Optional Mods so mods appear directly under the divider -->
                 <div id="settingsDropinModsContainer">
                     <div class="settingsModsHeader"><%- lang('settings.dropinMods') %></div>
                     <button id="settingsDropinFileSystemButton"><%- lang('settings.addMods') %> <span id="settingsDropinRefreshNote"><%- lang('settings.dropinRefreshNote') %></span></button>
+                    <div id="settingsDropinModsDivider" class="settingsModsDivider"></div>
                     <div id="settingsDropinModsContent">
+                        
+                    </div>
+                </div>
+                <div id="settingsOptModsContainer">
+                    <div class="settingsModsHeader"><%- lang('settings.optionalMods') %></div>
+                    <div id="settingsOptModsContent">
                         
                     </div>
                 </div>

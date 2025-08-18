@@ -14,7 +14,7 @@
 
 @font-face {
     font-family: 'Minecraft';
-    src: url('../fonts/Minecraft.ttf');
+    src: url('../fonts/Minecraftia-Regular.ttf');
 }
 
 /*******************************************************************************
@@ -57,6 +57,15 @@ p {
 body, button {
     font-family: 'Minecraftia-Regular';
     color: white;
+}
+
+/* Minecraft font (for specific elements like Add Mods button) */
+@font-face {
+    font-family: 'Minecraft';
+    src: url('../fonts/Minecraft.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
 
 /*body {
@@ -123,7 +132,7 @@ body, button {
 }
 #frameTitleText {
     font-size: 12px;
-    font-family: 'Minecraftia-Regular';
+    font-family: 'Minecraftia-Regular', sans-serif;
     letter-spacing: 0.5px;
 }
 
@@ -1059,18 +1068,13 @@ body, button {
     transition: background-color 0.25s cubic-bezier(.02, .01, .47, 1);
 }
 
-/* Drop shadow displayed when content is scrolled out of view. */
+/* Remove dark top shadow bar in settings */
 #settingsContainer:before {
-    content: '';
-    background: linear-gradient(rgba(0, 0, 0, 0.25), transparent);
-    width: 100%;
-    height: 5px;
-    position: absolute;
-    opacity: 0;
-    transition: opacity 0.25s ease;
+    content: none !important;
+    display: none !important;
 }
 #settingsContainer[scrolled]:before {
-    opacity: 1;
+    opacity: 0 !important;
 }
 
 /* Left hand side of the settings UI, for navigation. */
@@ -1313,12 +1317,12 @@ body, button {
 
 /* Add spacing to the top of each settings tab. */
 .settingsTab > *:first-child {
-    margin-top: 5%;
+    margin-top: 2%;
 }
 
 /* Add spacing to the bottom of each settings tab. */
 .settingsTab > *:last-child {
-    margin-bottom: 20%;
+    margin-bottom: 6%;
 }
 
 /* Tab header shared styles. */
@@ -1810,13 +1814,29 @@ input:checked + .toggleSwitchSlider:before {
     margin-bottom: 10px;
 }
 
+/* For the Drop-in/Custom Mods section, the header should NOT draw the divider.
+   We'll draw a dedicated divider after the Add Mods button instead. */
+#settingsDropinModsContainer > .settingsModsHeader {
+    border-bottom: 0;
+    padding-bottom: 0;
+    margin-bottom: 8px;
+}
+
+/* Divider placed under the Add Mods button */
+.settingsModsDivider {
+    height: 1px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.5);
+    margin: 10px 0 12px 0;
+}
+
 /* Mod elements sub-containers. */
 #settingsReqModsContainer {
     display: none; /* Hide required mods section */
 }
 #settingsOptModsContainer,
 #settingsDropinModsContainer {
-    padding-bottom: 25px;
+    padding-bottom: 10px;
 }
 
 /* Main content containers for mod elements. */
@@ -1906,22 +1926,29 @@ input:checked + .toggleSwitchSlider:before {
 
 /* Wrapper container for all submods. */
 .settingsSubModContainer {
-    margin-top: 10px;
+    margin-top: 0; /* bring mods list right under the Add Mods button */
 }
 
 /* Button to open the mods folder for drop-in mods. */
 #settingsDropinFileSystemButton {
     background: rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(126, 126, 126, 0.57);
-    border-radius: 3px;
-    height: 50px;
+    border-radius: 6px;
+    height: 60px;                      /* larger button */
     width: 100%;
-    text-align: left;
-    padding: 0px 50px;
+    display: flex;
+    align-items: center;           /* vertical center */
+    justify-content: center;       /* horizontal center */
+    gap: 8px;
+    text-align: center;
+    padding: 0 16px;               /* balanced padding */
     cursor: pointer;
     outline: none;
     transition: 0.25s ease;
-    margin-bottom: 10px;
+    margin: 0 0 10px 0 !important; /* stick to the top of section */
+    font-family: 'Minecraft', 'Minecraftia-Regular', sans-serif; /* apply minecraft font */
+    font-size: 18px;                   /* bigger font */
+    font-weight: 700;
 }
 #settingsDropinFileSystemButton:hover,
 #settingsDropinFileSystemButton:focus,
@@ -1931,8 +1958,10 @@ input:checked + .toggleSwitchSlider:before {
 }
 /* Refresh instructions on the file system button. */
 #settingsDropinRefreshNote {
-    font-size: 10px;
+    font-size: 12px;                   /* slightly larger */
     pointer-events: none;
+    font-family: 'Minecraft', 'Minecraftia-Regular', sans-serif;
+    opacity: 0.85;
 }
 
 /* Button to remove drop-in mods. */
@@ -3034,7 +3063,7 @@ input:checked + .toggleSwitchSlider:before {
     left: 50%;
     transform: translate(-50%, -50%);
     box-sizing: border-box;
-    border-radius: 50%;
+    border-radius: 40%;
     z-index: 9999;
 }
 
@@ -3044,7 +3073,7 @@ input:checked + .toggleSwitchSlider:before {
     position: relative;
     height: 70px;
     width: 70px;
-    border-radius: 50%;
+    border-radius: 40%;
     margin-top: 50px;
 }
 
@@ -3788,17 +3817,24 @@ input:checked + .toggleSwitchSlider:before {
 /* Launch details main container, hidden until launch processing begins. */
 #launch_details {
     position: fixed;
-    top: 59%; /* zarovnáno stejně jako #launch_button */
-    left: 50%; /* 15 % šířky obrazovky doprava od středu */
-    transform: translate(-50%, -50%);
-    display: none;
+    top: 59%; /* vertical position */
+    left: 50%; /* anchor at center */
+    right: auto;
+    width: fit-content; /* size only to its content to avoid extra width */
+    transform: translate(-50%, -50%); /* true center */
+    display: none; /* landing.js sets to 'flex' when visible */
+    display: none; /* default hidden */
+    justify-content: center; /* center children horizontally */
+    align-items: center;     /* center children vertically */
+    flex-direction: column;  /* stack vertically */
     z-index: 9999;
 }
 
  
 /* Left side of launch details container, displays percentage and a divider. */
 #launch_details_left {
-    display: flex;
+    /* Hidden to match the screenshot layout (percent shown on the right label) */
+    display: none;
 }
 
 /* Span which displays percentage complete. */
@@ -3817,6 +3853,11 @@ input:checked + .toggleSwitchSlider:before {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center; /* center all children on one axis */
+    width: 8cm;       /* match progress bar width for perfect centering */
+    min-width: 8cm;
+    max-width: 8cm;
+    overflow: visible; /* avoid clipping of labels */
 }
 
 /* Dark chevron button next to PLAY */
@@ -3850,26 +3891,108 @@ input:checked + .toggleSwitchSlider:before {
 
 /* No hover effects for chevron - static only */
 
-/* Progress bar styles. */
-#launch_progress[value] {
-    height: 3px;
-    width: 265px;
+/* Progress bar styles. Redesigned to a thicker, rounded green bar with smooth animation. */
+#launch_progress {
+    width: 8cm; /* fixed physical length as requested */
+    min-width: 8cm;
+    max-width: 8cm;
+    margin-left: auto;  /* center horizontally */
+    margin-right: auto; /* center horizontally */
+    align-self: center; /* ensure centering in flex column */
+    height: 24px; /* was 22px */
     -webkit-appearance: none;
-}
-#launch_progress[value]::-webkit-progress-bar {
-    background-color: transparent;
-}
-#launch_progress[value]::-webkit-progress-value {
-    background-color: #fff;
+    appearance: none;
+    border: none;
+    background: rgba(0, 0, 0, 0.85); /* track bg for Firefox */
+    border-radius: 10px; /* requested rounded corners */
+    overflow: hidden; /* clip the fill to rounded corners */
 }
 
-/* Span which displays information about the status of the launch process. */
-#launch_details_text {
-    font-size: 11px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+/* Track */
+#launch_progress::-webkit-progress-bar {
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 10px;
     overflow: hidden;
 }
+
+/* Value */
+#launch_progress::-webkit-progress-value {
+    /* base gradient */
+    background-image:
+        linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.10) 35%, rgba(255,255,255,0.06) 100%), /* top glossy */
+        linear-gradient(90deg, #19d46b 0%, #2bf08a 100%); /* base */
+    /* subtle glossy highlight overlay using inset shadow */
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.35),
+        inset 0 0 10px rgba(255,255,255,0.12),
+        inset 0 -1px 0 rgba(0,0,0,0.15),
+        0 2px 6px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    min-width: 12px;
+}
+
+/* Firefox */
+#launch_progress::-moz-progress-bar {
+    border-radius: 10px; /* requested rounded corners */
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.10) 35%, rgba(255,255,255,0.06) 100%),
+        linear-gradient(90deg, #19d46b 0%, #2bf08a 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.35),
+        inset 0 0 10px rgba(255,255,255,0.12),
+        inset 0 -1px 0 rgba(0,0,0,0.15),
+        0 2px 6px rgba(0, 0, 0, 0.25);
+    transition: width 200ms ease;
+}
+
+/* Row beneath progress: center both labels */
+#launch_details_row {
+    display: flex;
+    align-items: center; /* vertically center both labels */
+    justify-content: center; /* center horizontally */
+    width: 8cm;          /* match the bar width exactly */
+    min-width: 8cm;
+    max-width: 8cm;
+    margin-top: 14px;    /* bring closer but leave room */
+    gap: 12px;           /* spacing between labels */
+    padding-top: 6px;    /* ensure no top clipping from bar glow */
+    padding-bottom: 2px; /* room for descenders */
+    overflow: visible;
+    position: relative;
+    z-index: 2;          /* render above any bar glow */
+    margin-left: auto;   /* center the row itself under the bar */
+    margin-right: auto;  /* center the row itself under the bar */
+    align-self: center;  /* ensure centering inside flex column */
+}
+#launch_status_text,
+#launch_count_text { font-size: 13px; line-height: 1.5; padding-top: 1px; text-align: center; }
+
+#launch_status_text {
+    line-height: 1.5; /* more headroom for glyphs */
+    white-space: nowrap; /* single line */
+    text-overflow: clip;
+    overflow: visible;
+    flex: 0 0 auto; /* do not stretch, keep natural width */
+    text-align: center;
+}
+
+#launch_count_text  {
+    line-height: 1.2;
+    white-space: nowrap; /* keep compact on one line */
+    text-overflow: clip;
+    overflow: visible;
+    flex: 0 0 auto;
+    min-width: 0; /* avoid forcing early truncation of the status */
+    text-align: center; /* centered */
+    align-self: center; /* align with status label */
+}
+#launch_status_text { font-weight: 800; color: rgba(255,255,255,0.98); }
+#launch_count_text  { font-weight: 600; color: rgba(255,255,255,0.85); padding-right: 2px; }
+/* hide legacy single-line label if present */
+#launch_details_text { display: none; }
+
+/* Slight separation below the bar to avoid glow overlap, but keep labels close */
+#launch_progress { margin-bottom: 10px; }
 
 /*******************************************************************************
  *                                                                             *
@@ -4517,13 +4640,15 @@ input:checked + .toggleSwitchSlider:before {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 12px; /* add breathing room so ears aren't near edges */
 }
 
 /* Stationary image for the spinner. */
 #loadCenterImage {
     position: absolute;
-    width: 277px;
+    width: 253px; /* 277 - (padding*2) for same visual size */
     height: auto;
+    z-index: 401; /* ensure it's above any rotating layer */
 }
 
 /* Rotating image for the spinner. */
@@ -4541,6 +4666,160 @@ input:checked + .toggleSwitchSlider:before {
     to {
         transform: rotate(360deg);
     }
+}
+
+/* Prevent unwanted scrollbars and default margins */
+html, body {
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Title Bar (Windows) - polished layout and behavior                          */
+/* -------------------------------------------------------------------------- */
+
+#frameBar {
+    height: 22px; /* match existing layout calculations to prevent overflow */
+    margin-top: 0; /* remove extra offset creating a visible strip */
+    background: transparent !important; /* no dark overlay */
+    -webkit-backdrop-filter: none; /* make dimming uniform across the bar */
+    backdrop-filter: none; /* make dimming uniform across the bar */
+    box-shadow: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15); /* subtle hairline for separation */
+}
+
+#frameResizableTop { height: 2px; } /* small spacer so buttons aren't flush with the top */
+
+#frameMain { display: flex; align-items: center; justify-content: space-between; height: 22px; }
+
+#frameContentWin {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+/* Ensure the Windows button dock sits correctly within the bar */
+#frameButtonDockWin {
+    top: 0 !important; /* override earlier negative offset */
+    right: 5px;
+    height: 22px;
+}
+
+#frameTitleDock {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-left: 12px;
+    -webkit-app-region: drag;
+}
+
+#frameTitleText { font-weight: 600; letter-spacing: 0.2px; opacity: 0.92; }
+
+#frameButtonDockWin {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 0 6px;
+}
+
+.frameButton {
+    -webkit-app-region: no-drag;
+    appearance: none;
+    border: none;
+    background: transparent;
+    width: 30px;
+    height: 22px; /* align with frameBar height */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #ffffff;
+    opacity: 0.85;
+    transition: background 0.15s ease, opacity 0.15s ease, filter 0.15s ease;
+}
+
+.frameButton:hover { background: rgba(255,255,255,0.075); opacity: 1; }
+.frameButton:active { background: rgba(255,255,255,0.12); }
+
+.frameButton:disabled,
+.frameButton[disabled] {
+    cursor: not-allowed;
+    filter: grayscale(0.8) opacity(0.55);
+}
+
+.frameButton svg { pointer-events: none; }
+
+/* Normalize icon size and add special close hover */
+.frameButton svg { width: 12px; height: 12px; }
+.frameButton.fCb:hover { background: #e81123; opacity: 1; }
+.frameButton.fCb:active { background: #c50f1f; }
+
+/* -------------------------------------------------------------------------- */
+/* Login - modern glass style                                                  */
+/* -------------------------------------------------------------------------- */
+
+#loginOptionsContainer {
+    display: none; /* toggled by JS */
+}
+
+#loginOptionsContent {
+    min-height: calc(100vh - 32px); /* account for lowered title bar (22px + 10px margin) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.loginOptionsMainContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding: 28px 32px;
+    background: rgba(23, 22, 20, 0.30); /* lighten only the login background */
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.06) inset;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
+.loginOptionsMainContent h2 {
+    margin: 0 0 6px 0;
+    font-size: 28px;
+    letter-spacing: 0.6px;
+}
+
+.loginOptionActions { display: flex; gap: 12px; }
+
+.loginOptionButtonContainer { display: flex; }
+
+.loginOptionButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.03);
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    transition: transform 0.12s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.loginOptionButton:hover {
+    transform: translateY(-1px);
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.28);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+.loginOptionButton:active {
+    transform: translateY(0);
+    background: rgba(255,255,255,0.09);
 }
 
 /* Class which is applied when the spinner image is spinning. */

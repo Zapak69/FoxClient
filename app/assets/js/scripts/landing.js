@@ -37,6 +37,9 @@ const launch_details          = document.getElementById('launch_details')
 const launch_progress         = document.getElementById('launch_progress')
 const launch_progress_label   = document.getElementById('launch_progress_label')
 const launch_details_text     = document.getElementById('launch_details_text')
+// New label row elements (left status, right count/percent)
+const launch_status_text      = document.getElementById('launch_status_text')
+const launch_count_text       = document.getElementById('launch_count_text')
 const server_selection_button = document.getElementById('server_selection_button')
 const launch_button_subtext   = document.getElementById('launch_button_subtext')
 const user_text               = document.getElementById('user_text')
@@ -66,8 +69,65 @@ function toggleLaunchArea(loading){
  * @param {string} details The new text for the loading details.
  */
 function setLaunchDetails(details){
-    launch_details_text.innerHTML = details
+    // Update new left status label if present, else fallback to legacy
+    if(launch_status_text){
+        launch_status_text.innerHTML = details
+    }
+    if(launch_details_text){
+        launch_details_text.innerHTML = details
+    }
 }
+
+/**
+ * Internal UI setter for progress to avoid recursion with fake progress.
+ * @param {number} percent 
+ */
+function setProgressUI(percent){
+    const p = Math.max(0, Math.min(100, Number(percent) || 0))
+    launch_progress.setAttribute('max', 100)
+    launch_progress.setAttribute('value', p)
+    launch_progress_label.innerHTML = Math.round(p) + '%'
+    // Update right-side text to show percent when counts are unknown.
+    if(launch_count_text && !launch_count_text.hasAttribute('data-has-count')){
+        launch_count_text.innerHTML = `(${p.toFixed(0)}%)`
+    }
+}
+
+// Fake progress controller
+let __fakeProgressTimer = null
+let __fakeProgressValue = 0
+function startFakeProgress(maxTarget = 90, durationMs = 5000){
+    if(__fakeProgressTimer) return
+    __fakeProgressValue = 0
+    const tickMs = 80
+    const steps = Math.max(1, Math.floor(durationMs / tickMs))
+    const increment = (maxTarget - 0) / steps
+    __fakeProgressTimer = setInterval(() => {
+        __fakeProgressValue = Math.min(maxTarget, __fakeProgressValue + increment)
+        setProgressUI(Math.round(__fakeProgressValue))
+        if(__fakeProgressValue >= maxTarget){
+            stopFakeProgress()
+        }
+    }, tickMs)
+}
+function stopFakeProgress(){
+    if(__fakeProgressTimer){
+        clearInterval(__fakeProgressTimer)
+        __fakeProgressTimer = null
+    }
+}
+
+// Optional: allow explicit x/y counts like "13/14 (62.9%)"
+function setLaunchCount(current, total, percentOverride){
+    if(!launch_count_text) return
+    const c = Number(current) || 0
+    const t = Math.max(1, Number(total) || 0)
+    const pct = percentOverride != null ? Number(percentOverride) : (c/t*100)
+    launch_count_text.innerHTML = `${c}/${t} (${pct.toFixed(1)}%)`
+    launch_count_text.setAttribute('data-has-count', '1')
+}
+// expose for other modules if needed
+window.setLaunchCount = setLaunchCount
 
 /**
  * Set the value of the loading progress bar and display that value.
@@ -75,9 +135,15 @@ function setLaunchDetails(details){
  * @param {number} percent Percentage (0-100)
  */
 function setLaunchPercentage(percent){
-    launch_progress.setAttribute('max', 100)
-    launch_progress.setAttribute('value', percent)
-    launch_progress_label.innerHTML = percent + '%'
+    // If real progress arrives, stop fake.
+    if(Number(percent) > 0){
+        stopFakeProgress()
+    }
+    setProgressUI(percent)
+    // If we are at 0, begin a gentle fake progress until real updates come in.
+    if(Number(percent) <= 0){
+        startFakeProgress()
+    }
 }
 
 /**

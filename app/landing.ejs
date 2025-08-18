@@ -131,7 +131,12 @@
                     </div>
                     <div id="launch_details_right">
                         <progress id="launch_progress" value="22" max="100"></progress>
-                        <span id="launch_details_text" class="bot_label"><%- lang('landing.launchDetails') %></span>
+                        <div id="launch_details_row">
+                            <span id="launch_status_text" class="bot_label"><%- lang('landing.launchDetails') %></span>
+                            <span id="launch_count_text" class="bot_label">0/0 (0%)</span>
+                        </div>
+                        <!-- legacy label kept for backward compatibility; not shown by default via CSS -->
+                        <span id="launch_details_text" class="bot_label" style="display:none;"><%- lang('landing.launchDetails') %></span>
                     </div>
                 </div>
             </div>

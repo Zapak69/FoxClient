@@ -96,7 +96,7 @@ exports.deleteDropinMod = async function(modsDir, fullName){
 
     if(!res.result) {
         shell.beep()
-        console.error('Error deleting drop-in mod.', res.error)
+        console.error('Error deleting custom mod.', res.error)
         return false
     }
 
