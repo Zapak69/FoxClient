@@ -29,9 +29,9 @@ loginOptionMicrosoft.onclick = (e) => {
 }
 
 loginOptionCracked.onclick = (e) => {
-    shell.openExternal("https://www.foxclient.eu/cracked");
-};
-
+    const { shell } = require('electron')
+    shell.openExternal('https://www.foxclient.eu/cracked')
+}
 
 loginOptionsCancelButton.onclick = (e) => {
     switchView(getCurrentView(), loginOptionsViewOnCancel, 500, 500, () => {

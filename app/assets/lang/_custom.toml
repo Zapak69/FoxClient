@@ -1,7 +1,7 @@
 # Custom Language File for Launcher Customizer
 
 [ejs.app]
-title = "FoxClient Launcher"
+title = ""
 
 [ejs.landing]
 mediaGitHubURL = "https://www.foxclient.eu"

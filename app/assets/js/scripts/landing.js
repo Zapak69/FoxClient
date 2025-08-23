@@ -218,34 +218,34 @@ document.getElementById('avatarOverlay').onclick = async e => {
 
 // Make media labels clickable
 document.addEventListener('DOMContentLoaded', () => {
-    // Settings text clickable
-    const settingsLabel = document.querySelector('#settingsMediaContainer .mediaLabel')
-    if (settingsLabel) {
-        settingsLabel.onclick = () => document.getElementById('settingsMediaButton').click()
+    // Settings container clickable
+    const settingsContainer = document.getElementById('settingsMediaContainer')
+    if (settingsContainer) {
+        settingsContainer.onclick = () => document.getElementById('settingsMediaButton').click()
     }
     
-    // Mods text clickable  
-    const modsLabel = document.querySelector('#modsMediaContainer .mediaLabel')
-    if (modsLabel) {
-        modsLabel.onclick = () => document.getElementById('modsMediaButton').click()
+    // Mods container clickable  
+    const modsContainer = document.getElementById('modsMediaContainer')
+    if (modsContainer) {
+        modsContainer.onclick = () => document.getElementById('modsMediaButton').click()
     }
     
-    // Website text clickable
-    const websiteLabel = document.querySelector('#linkMediaContainer .mediaLabel')
-    if (websiteLabel) {
-        websiteLabel.onclick = () => document.querySelector('#linkURL').click()
+    // Website container clickable
+    const websiteContainer = document.getElementById('linkMediaContainer')
+    if (websiteContainer) {
+        websiteContainer.onclick = () => document.querySelector('#linkURL').click()
     }
     
-    // YouTube text clickable
-    const youtubeLabel = document.querySelector('#youtubeMediaContainer .mediaLabel')
-    if (youtubeLabel) {
-        youtubeLabel.onclick = () => document.querySelector('#youtubeURL').click()
+    // YouTube container clickable
+    const youtubeContainer = document.getElementById('youtubeMediaContainer')
+    if (youtubeContainer) {
+        youtubeContainer.onclick = () => document.querySelector('#youtubeURL').click()
     }
     
-    // Discord text clickable
-    const discordLabel = document.querySelector('#discordMediaContainer .mediaLabel')
-    if (discordLabel) {
-        discordLabel.onclick = () => document.querySelector('#discordURL').click()
+    // Discord container clickable
+    const discordContainer = document.getElementById('discordMediaContainer')
+    if (discordContainer) {
+        discordContainer.onclick = () => document.querySelector('#discordURL').click()
     }
 })
 
