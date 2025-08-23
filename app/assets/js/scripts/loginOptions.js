@@ -1,5 +1,6 @@
 const loginOptionsCancelContainer = document.getElementById('loginOptionCancelContainer')
 const loginOptionMicrosoft = document.getElementById('loginOptionMicrosoft')
+const loginOptionCracked = document.getElementById('loginOptionCracked')
 const loginOptionsCancelButton = document.getElementById('loginOptionCancelButton')
 
 let loginOptionsCancellable = false
@@ -26,6 +27,11 @@ loginOptionMicrosoft.onclick = (e) => {
         )
     })
 }
+
+loginOptionCracked.onclick = (e) => {
+    shell.openExternal("https://www.foxclient.eu/cracked");
+};
+
 
 loginOptionsCancelButton.onclick = (e) => {
     switchView(getCurrentView(), loginOptionsViewOnCancel, 500, 500, () => {
