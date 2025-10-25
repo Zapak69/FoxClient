@@ -1,0 +1,18 @@
+# Custom Language File for Launcher Customizer
+
+[ejs.app]
+title = ""
+
+[ejs.landing]
+mediaGitHubURL = "https://www.foxclient.eu"
+mediaYouTubeURL = "https://www.youtube.com/@officialfoxclient"
+mediaDiscordURL = "https://discord.gg/crystalcommunity"
+
+[ejs.settings]
+sourceGithubLink = "https://github.com/Zapak69/FoxClient"
+supportLink = "https://discord.gg/crystalcommunity"
+
+[ejs.welcome]
+welcomeHeader = "WELCOME TO FOXCLIENT"
+welcomeDescription = "Our mission is to recreate the universe imagined by author George RR Martin in his fantasy series, A Song of Ice and Fire.  Through the collaborative effort of thousands of community members, we have sought to create Westeros as accurately and precisely as possible within Minecraft.  The world we are creating is yours to explore.  Journey from Dorne to Castle Black, and if you aren’t afraid, beyond the Wall itself, but best not delay.  As the words of House Stark ominously warn: Winter is Coming."
+welcomeDescCTA = "You are just a few clicks away from Westeros."
