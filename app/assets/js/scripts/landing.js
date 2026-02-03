@@ -162,8 +162,9 @@ function setDownloadPercentage(percent){
  * @param {boolean} val True to enable, false to disable.
  */
 function setLaunchEnabled(val){
-    document.getElementById('launch_button').disabled = !val
+    document.getElementById('launch_button').disabled = true;
 }
+
 
 // Bind launch button
 document.getElementById('launch_button').addEventListener('click', async e => {

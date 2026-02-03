@@ -3738,7 +3738,7 @@ input:checked + .toggleSwitchSlider:before {
 }
 
 #launch_button {
-    background: #39ff14; /* neon green */
+    background: #ff1414; /* neon green */
     border: none;
     cursor: pointer;
     border-radius: 12px;
@@ -3755,9 +3755,9 @@ input:checked + .toggleSwitchSlider:before {
     color: #ffffff;
     /* green inner glow + very strong ambient/drop shadow + subtle neon */
     box-shadow:
-        0 0 0 2px rgba(57,255,20,0.18) inset,
-        0 4px 12px rgba(57,255,20,0.12),
-        0 0 18px rgba(57,255,20,0.22), /* soft outer neon */
+        0 0 0 2px rgba(255, 20, 20, 0.18) inset,
+        0 4px 12px rgba(255, 20, 20, 0.12),
+        0 0 18px rgba(255, 20, 20, 0.22), /* soft outer neon */
         0 16px 40px rgba(0,0,0,0.66),
         0 8px 18px rgba(0,0,0,0.42),
         0 2px 2px rgba(0,0,0,0.45);
@@ -3788,9 +3788,9 @@ input:checked + .toggleSwitchSlider:before {
 #launch_button:focus {
     transform: translateZ(0) scale(1.01);
     box-shadow:
-        0 0 0 2px rgba(57,255,20,0.24) inset,
-        0 0 22px rgba(57,255,20,0.30), /* stronger outer neon on hover */
-        0 6px 16px rgba(57,255,20,0.16),
+        0 0 0 2px rgba(255, 20, 20, 0.24) inset,
+        0 0 22px rgba(255, 20, 20, 0.3), /* stronger outer neon on hover */
+        0 6px 16px rgba(255, 20, 20, 0.16),
         0 26px 64px rgba(0,0,0,0.72),
         0 10px 22px rgba(0,0,0,0.46),
         0 3px 2px rgba(0,0,0,0.50);
@@ -3799,9 +3799,9 @@ input:checked + .toggleSwitchSlider:before {
     transform: translateZ(0) scale(0.99);
     filter: brightness(0.96);
     box-shadow:
-        0 0 0 2px rgba(57,255,20,0.20) inset,
-        0 0 16px rgba(57,255,20,0.24),
-        0 4px 12px rgba(57,255,20,0.14),
+        0 0 0 2px rgba(255, 20, 20, 0.2) inset,
+        0 0 16px rgba(255, 20, 20, 0.24),
+        0 4px 12px rgba(255, 20, 20, 0.14),
         0 16px 40px rgba(0,0,0,0.58),
         0 6px 14px rgba(0,0,0,0.38),
         0 2px 2px rgba(0,0,0,0.44);
@@ -3810,7 +3810,7 @@ input:checked + .toggleSwitchSlider:before {
     cursor: default;
     pointer-events: none;
     filter: grayscale(0.2) brightness(0.85);
-    box-shadow: 0 0 0 4px rgba(57,255,20,0.2) inset, 0 4px 12px rgba(57,255,20,0.2);
+    box-shadow: 0 0 0 4px rgba(255, 20, 20, 0.2) inset, 0 4px 12px rgba(255, 20, 20, 0.2);
 }
 
 /* Launch details main container, hidden until launch processing begins. */
