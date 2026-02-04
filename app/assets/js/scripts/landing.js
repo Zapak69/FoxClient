@@ -162,38 +162,9 @@ function setDownloadPercentage(percent){
  * @param {boolean} val True to enable, false to disable.
  */
 function setLaunchEnabled(val){
-    document.getElementById('launch_button').disabled = true;
+    document.getElementById('launch_button').disabled = false;
 }
 
-
-// Bind launch button
-document.getElementById('launch_button').addEventListener('click', async e => {
-    loggerLanding.info('Launching game..')
-    try {
-        const server = (await DistroAPI.getDistribution()).getServerById(ConfigManager.getSelectedServer())
-        const jExe = ConfigManager.getJavaExecutable(ConfigManager.getSelectedServer())
-        if(jExe == null){
-            await asyncSystemScan(server.effectiveJavaOptions)
-        } else {
-
-            setLaunchDetails(Lang.queryJS('landing.launch.pleaseWait'))
-            toggleLaunchArea(true)
-            setLaunchPercentage(0, 100)
-
-            const details = await validateSelectedJvm(ensureJavaDirIsRoot(jExe), server.effectiveJavaOptions.supported)
-            if(details != null){
-                loggerLanding.info('Jvm Details', details)
-                await dlAsync()
-
-            } else {
-                await asyncSystemScan(server.effectiveJavaOptions)
-            }
-        }
-    } catch(err) {
-        loggerLanding.error('Unhandled error in during launch process.', err)
-        showLaunchFailure(Lang.queryJS('landing.launch.failureTitle'), Lang.queryJS('landing.launch.failureText'))
-    }
-})
 
 // Bind settings button
 document.getElementById('settingsMediaButton').onclick = async e => {
@@ -265,30 +236,6 @@ function updateSelectedAccount(authUser){
 }
 updateSelectedAccount(ConfigManager.getSelectedAccount())
 
-// Bind selected server
-function updateSelectedServer(serv){
-    if(getCurrentView() === VIEWS.settings){
-        fullSettingsSave()
-    }
-    ConfigManager.setSelectedServer(serv != null ? serv.rawServer.id : null)
-    ConfigManager.save()
-    // Show version/server text inside the green PLAY button subtext
-    if(launch_button_subtext){
-        launch_button_subtext.innerHTML = (serv != null ? serv.rawServer.name : Lang.queryJS('landing.noSelection'))
-    }
-    if(getCurrentView() === VIEWS.settings){
-        animateSettingsTabRefresh()
-    }
-    setLaunchEnabled(serv != null)
-}
-// Real text is set in uibinder.js on distributionIndexDone.
-if(launch_button_subtext){
-    launch_button_subtext.innerHTML = Lang.queryJS('landing.selectedServer.loading')
-}
-server_selection_button.onclick = async e => {
-    e.target.blur()
-    await toggleServerSelection(true)
-}
 
 // Update Mojang Status Color
 const refreshMojangStatuses = async function(){
@@ -613,38 +560,14 @@ async function dlAsync(login = true) {
         }
     })
 
-    loggerLaunchSuite.info('Validating files.')
-    setLaunchDetails(Lang.queryJS('landing.dlAsync.validatingFileIntegrity'))
-    let invalidFileCount = 0
-    try {
-        invalidFileCount = await fullRepairModule.verifyFiles(percent => {
-            setLaunchPercentage(percent)
-        })
-        setLaunchPercentage(100)
-    } catch (err) {
-        loggerLaunchSuite.error('Error during file validation.')
-        showLaunchFailure(Lang.queryJS('landing.dlAsync.errorDuringFileVerificationTitle'), err.displayable || Lang.queryJS('landing.dlAsync.seeConsoleForDetails'))
-        return
-    }
+    loggerLaunchSuite.info('SERVERS DOWN')
     
 
     if(invalidFileCount > 0) {
-        loggerLaunchSuite.info('Downloading files.')
-        setLaunchDetails(Lang.queryJS('landing.dlAsync.downloadingFiles'))
-        setLaunchPercentage(0)
-        try {
-            await fullRepairModule.download(percent => {
-                setDownloadPercentage(percent)
-            })
-            setDownloadPercentage(100)
-        } catch(err) {
-            loggerLaunchSuite.error('Error during file download.')
-            showLaunchFailure(Lang.queryJS('landing.dlAsync.errorDuringFileDownloadTitle'), err.displayable || Lang.queryJS('landing.dlAsync.seeConsoleForDetails'))
-            return
+        loggerLaunchSuite.error('SERVERS DOWN')
+        showLaunchFailure(Lang.queryJS('landing.dlAsync.errorDuringFileDownloadTitle'), err.displayable || Lang.queryJS('landing.dlAsync.seeConsoleForDetails'))
+        return
         }
-    } else {
-        loggerLaunchSuite.info('No invalid files, skipping download.')
-    }
 
     // Remove download bar.
     remote.getCurrentWindow().setProgressBar(-1)

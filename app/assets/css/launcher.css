@@ -3786,25 +3786,7 @@ input:checked + .toggleSwitchSlider:before {
 
 #launch_button:hover,
 #launch_button:focus {
-    transform: translateZ(0) scale(1.01);
-    box-shadow:
-        0 0 0 2px rgba(255, 20, 20, 0.24) inset,
-        0 0 22px rgba(255, 20, 20, 0.3), /* stronger outer neon on hover */
-        0 6px 16px rgba(255, 20, 20, 0.16),
-        0 26px 64px rgba(0,0,0,0.72),
-        0 10px 22px rgba(0,0,0,0.46),
-        0 3px 2px rgba(0,0,0,0.50);
-}
-#launch_button:active {
-    transform: translateZ(0) scale(0.99);
-    filter: brightness(0.96);
-    box-shadow:
-        0 0 0 2px rgba(255, 20, 20, 0.2) inset,
-        0 0 16px rgba(255, 20, 20, 0.24),
-        0 4px 12px rgba(255, 20, 20, 0.14),
-        0 16px 40px rgba(0,0,0,0.58),
-        0 6px 14px rgba(0,0,0,0.38),
-        0 2px 2px rgba(0,0,0,0.44);
+    cursor: not-allowed;
 }
 #launch_button:disabled {
     cursor: default;
